@@ -1,0 +1,8 @@
+<div class="start">
+  <button (click)="initialize()" [ngStyle]="{'background-color': submit? 'white':'#0087DD'}" class="submit" type="submit" mat-button>
+    <span *ngIf="!submit" class="text-light">Get Started</span>
+    <div *ngIf="submit" class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </button>
+</div>

@@ -1,0 +1,87 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="(isHandset$ | async) === false">
+    <!-- <mat-toolbar>
+
+    </mat-toolbar> -->
+    <mat-nav-list dense>
+      <div class="links">
+        <div class="link">
+          <mdb-icon fas icon="chart-line"></mdb-icon><a [routerLink]="['/dashboard']" routerLinkActive="router-link-active" >Dashboard</a>
+        </div>
+        <div class="link">
+          <mdb-icon fas icon="university"></mdb-icon><a [routerLink]="['/bank-accounts']" routerLinkActive="router-link-active" >Bank Accounts</a>
+        </div>
+        <div class="link">
+          <mdb-icon fas icon="cash-register"></mdb-icon><a [routerLink]="['/cash-accounts']" routerLinkActive="router-link-active" >Cash Accounts</a>
+        </div>
+        <div class="link">
+          <mdb-icon fas icon="exchange-alt"></mdb-icon><a [routerLink]="['/inter-account-transfers']" routerLinkActive="router-link-active" >Inter Account Transfers</a>
+        </div>
+        <div class="link">
+          <mdb-icon fas icon="check"></mdb-icon><a [routerLink]="['/bank-reconcilation']" routerLinkActive="router-link-active" >Bank Reconcilations</a>
+        </div>
+        <div class="link">
+          <mdb-icon fas icon="receipt"></mdb-icon><a [routerLink]="['/receipts']" routerLinkActive="router-link-active" >Receipts</a>
+        </div>
+        <div class="link">
+          <mdb-icon far icon="credit-card"></mdb-icon><a [routerLink]="['/payments']" routerLinkActive="router-link-active" >Payments</a>
+        </div>
+        <div class="link">
+          <mdb-icon fas icon="warehouse"></mdb-icon><a [routerLink]="['/inventory-items']" routerLinkActive="router-link-active" >Inventory Items</a>
+        </div>
+        <div class="link">
+          <mdb-icon fas icon="users"></mdb-icon><a [routerLink]="['/customers']" routerLinkActive="router-link-active" >Customers</a>
+        </div>
+        <div class="link">
+          <mdb-icon fas icon="parachute-box"></mdb-icon><a [routerLink]="['/suppliers']" routerLinkActive="router-link-active" >Suppliers</a>
+        </div>
+        <div class="link">
+          <mdb-icon fas icon="file-invoice"></mdb-icon><a [routerLink]="['/sale-invoice']" routerLinkActive="router-link-active" >Sale Invoice</a>
+        </div>
+        <div class="link">
+          <mdb-icon fas icon="file-invoice-dollar"></mdb-icon><a [routerLink]="['/purchase-invoice']" routerLinkActive="router-link-active" >Purchase Invoice</a>
+        </div>
+        <div class="link">
+          <mdb-icon fas icon="book-open"></mdb-icon><a [routerLink]="['/journal']" routerLinkActive="router-link-active" >Journal</a>
+        </div>
+        <div class="link">
+          <mdb-icon fas icon="print"></mdb-icon><a [routerLink]="['/reports']" routerLinkActive="router-link-active" >Reports</a>
+        </div>
+        <div class="link">
+          <mdb-icon fas icon="cog"></mdb-icon><a [routerLink]="['/settings']" routerLinkActive="router-link-active" >Settings</a>
+        </div>
+        <div class="link mt-5">
+          <a class="logout" href="javascript:void()" (click)="confirmLogout()" >LOGOUT</a>
+        </div>
+      </div>
+
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar style="background-color: white;" class="d-flex justify-content-between">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <button (click)="back()" class="back"><mdb-icon fas icon="angle-left" class="mr-1"></mdb-icon>Back</button>
+      <div class="brand">
+        <div class="logo">
+          <img [src]="logo" alt="" *ngIf="logo" style="height: 50px;" class="mr-1">
+        </div>
+        <div class="details">
+          <div class="company">ASUSU ACCOUNTING</div>
+        <div class="vendor">{{vendor.name}}</div>
+        </div>
+      </div>
+    </mat-toolbar>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+

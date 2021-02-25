@@ -1,0 +1,36 @@
+.create{
+  button{
+    padding: 5px 20px;
+    border-radius: 5px;
+    background-color: rgb(255, 255, 255);
+    color: rgb(100, 100, 100);
+    border: unset;
+    font-size: 0.8em;
+    margin: 20px;
+
+    &:hover{
+      background-color: rgb(210, 210, 210);
+    }
+  }
+}
+
+.list{
+  background-color: #fff;
+}
+
+
+
+table, th, td {
+  border-collapse: collapse;
+  border:1px solid black;
+}
+td{
+  border-top: none;
+  border-bottom: none;
+}
+
+.head{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

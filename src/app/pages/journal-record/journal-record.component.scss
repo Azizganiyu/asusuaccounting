@@ -1,0 +1,99 @@
+.create{
+  button{
+    padding: 5px 20px;
+    border-radius: 5px;
+    background-color: rgb(255, 255, 255);
+    color: rgb(100, 100, 100);
+    border: unset;
+    font-size: 0.8em;
+    margin: 20px;
+
+    &:hover{
+      background-color: rgb(210, 210, 210);
+    }
+  }
+}
+
+.list{
+  background-color: #fff;
+}
+
+button.edit{
+  padding: 3px 10px;
+  font-size: 0.8em;
+  border: unset;
+  color: rgb(100, 100, 100);
+  border: 1px solid rgb(210, 210, 210);
+  border-radius: 5px;
+  margin: 0 3px;
+
+  &:hover{
+    background-color: rgb(210, 210, 210);
+  }
+}
+
+form{
+  width: 100%;
+  padding: 30px;
+  background-color: rgb(230, 230, 230);
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+.entry{
+  display: flex;
+  width: 600px;
+  position: relative;
+
+  .account{
+    width: 30%;
+  }
+
+  .description{
+    width: 40%;
+  }
+
+  .debit, .credit{
+    width: 15%;
+  }
+}
+
+.total{
+  display: flex;
+  width: 600px;
+  justify-content: flex-end;
+  .credit, .debit{
+    width: 15%;
+    background-color: #fff;
+    border: 1px solid rgb(230, 230, 230);
+    padding: 5px;
+  }
+}
+
+button.addline{
+  padding: 5px 20px;
+  border-radius: 5px;
+  background-color: rgb(60, 60, 60);
+  color: rgb(255, 255, 255);
+  border: unset;
+  font-size: 0.8em;
+  margin: 20px;
+
+  &:hover{
+    opacity: .7;
+  }
+}
+
+.remove{
+  position: absolute;
+  right: -40px;
+  top: 10px;
+
+  button{
+    border: unset;
+    background-color: unset;
+  }
+}

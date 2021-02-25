@@ -1,0 +1,198 @@
+<div class="container mt-4">
+  <div class="create">
+    <button (click)="accountSubCreateModal.show()">New Group</button>
+    <button (click)="accountCreateModal.show()">New Account</button>
+  </div>
+
+  <div class="list p-3 mt-5 mb-5" *ngIf="!loading; else elseLoading">
+    <table mdbTable small="true">
+      <thead>
+        <tr>
+          <th *ngFor="let head of headElements" scope="col">{{head}} </th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let el of accounts">
+          <tr mdbTableCol>
+            <td class="parent">{{el.name}}</td>
+            <td>
+              <button *ngIf="el.removable" (click)="groupEdit(el)" class="edit">Edit</button>
+            </td>
+          </tr>
+          <tr mdbTableCol *ngFor="let acct of el.chart_of_accounts">
+            <td class="child">{{acct.name}}</td>
+            <td>
+              <button *ngIf="acct.removable" (click)="edit(acct)" class="edit">Edit</button>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #elseLoading>
+    <app-loading></app-loading>
+  </ng-template>
+
+</div>
+
+
+<div [config]="{backdrop: false, ignoreBackdropClick: true}" style="overflow-y: auto" mdbModal #accountCreateModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myaccountCreateModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h5 class="modal-title w-100" id="myModalLabel">Create a new account</h5>
+      </div>
+      <div class="modal-body">
+        <form  [formGroup]="accountForm" (ngSubmit)="create()">
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Name</mat-label>
+            <input matInput type="text" formControlName="name">
+            <div *ngIf="accountForm.controls.name.invalid && (accountForm.controls.name.dirty || accountForm.controls.name.touched)">
+              <mat-error *ngIf="accountForm.controls.name?.hasError('required')">Required</mat-error>
+            </div>
+          </mat-form-field>
+
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Group</mat-label>
+            <mat-select formControlName="sub_id">
+                  <mat-option [value]="null">Select</mat-option>
+                  <mat-option *ngFor="let item of accounts" [value]="item.id">{{item.name}}</mat-option>
+            </mat-select>
+            <div *ngIf="accountForm.controls.sub_id.invalid && (accountForm.controls.sub_id.dirty || accountForm.controls.sub_id.touched)">
+              <mat-error *ngIf="accountForm.controls.sub_id?.hasError('required')">Required</mat-error>
+            </div>
+          </mat-form-field>
+
+          <div class="mt-5">
+            <button [ngStyle]="{'background-color': submit? 'white':'#0087DD'}" [disabled]="!accountForm.valid" class="submit" type="submit" mat-button>
+              <span *ngIf="!submit" class="text-light">Create</span>
+              <div *ngIf="submit" class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </button>
+          </div>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div [config]="{backdrop: false, ignoreBackdropClick: true}" style="overflow-y: auto" mdbModal #accountEditModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myaccountEditModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h5 class="modal-title w-100" id="myModalLabel">Edit account</h5>
+      </div>
+      <div class="modal-body">
+        <form  [formGroup]="accountForm" (ngSubmit)="update()">
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Name</mat-label>
+            <input matInput type="text" formControlName="name">
+            <div *ngIf="accountForm.controls.name.invalid && (accountForm.controls.name.dirty || accountForm.controls.name.touched)">
+              <mat-error *ngIf="accountForm.controls.name?.hasError('required')">Required</mat-error>
+            </div>
+          </mat-form-field>
+
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Group</mat-label>
+            <mat-select formControlName="sub_id">
+                  <mat-option [value]="null">Select</mat-option>
+                  <mat-option *ngFor="let item of accounts" [value]="item.id">{{item.name}}</mat-option>
+            </mat-select>
+            <div *ngIf="accountForm.controls.sub_id.invalid && (accountForm.controls.sub_id.dirty || accountForm.controls.sub_id.touched)">
+              <mat-error *ngIf="accountForm.controls.sub_id?.hasError('required')">Required</mat-error>
+            </div>
+          </mat-form-field>
+
+          <div class="mt-5">
+            <button [ngStyle]="{'background-color': submit? 'white':'#0087DD'}" [disabled]="!accountForm.valid" class="submit" type="submit" mat-button>
+              <span *ngIf="!submit" class="text-light">Update</span>
+              <div *ngIf="submit" class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </button>
+            <button (click)="confirmDelete()" class="submit ml-3 btn-danger" type="button" mat-button>
+              Delete
+            </button>
+          </div>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div [config]="{backdrop: false, ignoreBackdropClick: true}" style="overflow-y: auto" mdbModal #accountSubCreateModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myaccountSubCreateModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h5 class="modal-title w-100" id="myModalLabel">Create a new group</h5>
+      </div>
+      <div class="modal-body">
+        <form  [formGroup]="accountSubForm" (ngSubmit)="groupCreate()">
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Name</mat-label>
+            <input matInput type="text" formControlName="name">
+            <div *ngIf="accountSubForm.controls.name.invalid && (accountSubForm.controls.name.dirty || accountSubForm.controls.name.touched)">
+              <mat-error *ngIf="accountSubForm.controls.name?.hasError('required')">Required</mat-error>
+            </div>
+          </mat-form-field>
+
+          <div class="mt-5">
+            <button [ngStyle]="{'background-color': submit? 'white':'#0087DD'}" [disabled]="!accountSubForm.valid" class="submit" type="submit" mat-button>
+              <span *ngIf="!submit" class="text-light">Create</span>
+              <div *ngIf="submit" class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </button>
+          </div>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div [config]="{backdrop: false, ignoreBackdropClick: true}" style="overflow-y: auto" mdbModal #accountSubEditModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myaccountSubEditModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h5 class="modal-title w-100" id="myModalLabel">Edit Group</h5>
+      </div>
+      <div class="modal-body">
+        <form  [formGroup]="accountSubForm" (ngSubmit)="groupUpdate()">
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Name</mat-label>
+            <input matInput type="text" formControlName="name">
+            <div *ngIf="accountSubForm.controls.name.invalid && (accountSubForm.controls.name.dirty || accountSubForm.controls.name.touched)">
+              <mat-error *ngIf="accountSubForm.controls.name?.hasError('required')">Required</mat-error>
+            </div>
+          </mat-form-field>
+
+          <div class="mt-5">
+            <button [ngStyle]="{'background-color': submit? 'white':'#0087DD'}" [disabled]="!accountSubForm.valid" class="submit" type="submit" mat-button>
+              <span *ngIf="!submit" class="text-light">Update</span>
+              <div *ngIf="submit" class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </button>
+            <button (click)="confirmGroupDelete()" class="submit ml-3 btn-danger" type="button" mat-button>
+              Delete
+            </button>
+          </div>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>

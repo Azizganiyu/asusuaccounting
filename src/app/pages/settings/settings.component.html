@@ -1,0 +1,34 @@
+<div class="dark-font bc-icons-2 breadcrumb">
+
+  <mdb-breadcrumb customClass="black-text grey lighten-5">
+    <mdb-breadcrumb-item>
+      <mdb-icon fas icon="angle-right" class="mr-1"></mdb-icon> <a [routerLink]="['']">Settings</a>
+    </mdb-breadcrumb-item>
+    <!-- <mdb-breadcrumb-item class="active">
+      <mdb-icon fas icon="angle-right" class="mr-1"></mdb-icon> Careers
+    </mdb-breadcrumb-item> -->
+  </mdb-breadcrumb>
+
+</div>
+
+<div class="container mt-5">
+  <div class="settings">
+    <a [routerLink]="['business-logo']" routerLinkActive="router-link-active"  class="item">
+      <mdb-icon fas icon="image" class="mr-1"></mdb-icon>
+      <span>Business Logo</span>
+    </a>
+    <a [routerLink]="['chart-of-accounts']" routerLinkActive="router-link-active"  class="item">
+      <mdb-icon fas icon="sitemap" class="mr-1"></mdb-icon>
+      <span>Chart of Accounts</span>
+    </a>
+    <a [routerLink]="['start-date']" routerLinkActive="router-link-active"  class="item">
+      <mdb-icon fas icon="clock" class="mr-1"></mdb-icon>
+      <span>Start Date</span>
+    </a>
+
+    <a href="javascript:void()" (click)="confirmDelete()" routerLinkActive="router-link-active"  class="item">
+      <mdb-icon fas icon="minus-circle" class="mr-1"></mdb-icon>
+      <span>Delete Account</span>
+    </a>
+  </div>
+</div>

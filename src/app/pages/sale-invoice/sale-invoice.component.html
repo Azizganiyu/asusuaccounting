@@ -1,0 +1,217 @@
+<div class="container mt-4">
+  <div class="create">
+    <button (click)="saleCreateModal.show()">New Sale Invoice</button>
+  </div>
+</div>
+
+<div class="list p-3 mt-5 mb-5" *ngIf="!loading; else elseLoading">
+  <table mdbTable small="true">
+    <thead>
+      <tr>
+        <th *ngFor="let head of headElements" scope="col">{{head}} </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr mdbTableCol *ngFor="let el of sales">
+        <td>{{el.date | date}}</td>
+        <td>{{el.invoice_number}}</td>
+        <td>{{el.customer.name}}</td>
+        <td>{{(el.qty * el.unit_price) | amount}}</td>
+        <td>{{(el.balance) | amount}}</td>
+        <td class="status">
+          <mdb-badge *ngIf="el.status_code == 1" color="purple darken-2">{{el.status}}</mdb-badge>
+          <mdb-badge *ngIf="el.status_code == 2" color="red darken-2">{{el.status}}</mdb-badge>
+          <mdb-badge *ngIf="el.status_code == 0" color="amber darken-2">{{el.status}}</mdb-badge>
+        </td>
+        <td>
+          <button (click)="edit(el)" class="edit">Edit</button>
+          <button (click)="view(el)" class="edit">View</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #elseLoading>
+  <app-loading></app-loading>
+</ng-template>
+
+<div [config]="{backdrop: false, ignoreBackdropClick: true}" style="overflow-y: auto" mdbModal #saleCreateModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mysaleCreateModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h5 class="modal-title w-100" id="myModalLabel">Create a new sale</h5>
+      </div>
+      <div class="modal-body">
+        <form  [formGroup]="saleForm" (ngSubmit)="create()">
+
+          <mat-form-field appearance="standard">
+            <mat-label>Invoice date</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="standard">
+            <mat-label>Due date</mat-label>
+            <input matInput [matDatepicker]="picker2" formControlName="due_date">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Invoice number</mat-label>
+            <input matInput type="text" formControlName="invoice_number">
+          </mat-form-field>
+
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Customer</mat-label>
+            <mat-select formControlName="customer">
+                  <mat-option [value]="null">Select</mat-option>
+                  <mat-option *ngFor="let item of customers" [value]="item.id">{{item.name}}</mat-option>
+            </mat-select>
+            <div *ngIf="saleForm.controls.customer.invalid && (saleForm.controls.customer.dirty || saleForm.controls.customer.touched)">
+              <mat-error *ngIf="saleForm.controls.customer?.hasError('required')">Required</mat-error>
+            </div>
+          </mat-form-field>
+
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Description</mat-label>
+            <input matInput type="text" formControlName="description">
+          </mat-form-field>
+
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Item</mat-label>
+            <mat-select formControlName="item">
+                  <mat-option [value]="null">Select</mat-option>
+                  <mat-option *ngFor="let item of items" [value]="item.id">{{item.name}}</mat-option>
+            </mat-select>
+            <div *ngIf="saleForm.controls.item.invalid && (saleForm.controls.item.dirty || saleForm.controls.item.touched)">
+              <mat-error *ngIf="saleForm.controls.item?.hasError('required')">Required</mat-error>
+            </div>
+          </mat-form-field>
+
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Qty</mat-label>
+            <input matInput type="number" formControlName="qty">
+            <div *ngIf="saleForm.controls.qty.invalid && (saleForm.controls.qty.dirty || saleForm.controls.qty.touched)">
+              <mat-error *ngIf="saleForm.controls.qty?.hasError('required')">Required</mat-error>
+            </div>
+          </mat-form-field>
+
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Unit price</mat-label>
+            <input matInput type="number" formControlName="unit_price">
+            <div *ngIf="saleForm.controls.unit_price.invalid && (saleForm.controls.unit_price.dirty || saleForm.controls.unit_price.touched)">
+              <mat-error *ngIf="saleForm.controls.unit_price?.hasError('required')">Required</mat-error>
+            </div>
+          </mat-form-field>
+          <strong>Total: </strong> {{total.toLocaleString()}}
+          <div class="mt-5">
+            <button [ngStyle]="{'background-color': submit? 'white':'#0087DD'}" [disabled]="!saleForm.valid" class="submit" type="submit" mat-button>
+              <span *ngIf="!submit" class="text-light">Create</span>
+              <div *ngIf="submit" class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </button>
+          </div>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div [config]="{backdrop: false, ignoreBackdropClick: true}" style="overflow-y: auto" mdbModal #saleEditModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mysaleEditModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h5 class="modal-title w-100" id="myModalLabel">Edit trasnfer</h5>
+      </div>
+      <div class="modal-body">
+        <form  [formGroup]="saleForm" (ngSubmit)="update()">
+
+          <mat-form-field appearance="standard">
+            <mat-label>Invoice date</mat-label>
+            <input matInput [matDatepicker]="picker3" formControlName="date">
+            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+            <mat-datepicker #picker3></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="standard">
+            <mat-label>Due date</mat-label>
+            <input matInput [matDatepicker]="picker4" formControlName="due_date">
+            <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+            <mat-datepicker #picker4></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Invoice number</mat-label>
+            <input matInput type="text" formControlName="invoice_number">
+          </mat-form-field>
+
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Customer</mat-label>
+            <mat-select formControlName="customer">
+                  <mat-option [value]="null">Select</mat-option>
+                  <mat-option *ngFor="let item of customers" [value]="item.id">{{item.name}}</mat-option>
+            </mat-select>
+            <div *ngIf="saleForm.controls.customer.invalid && (saleForm.controls.customer.dirty || saleForm.controls.customer.touched)">
+              <mat-error *ngIf="saleForm.controls.customer?.hasError('required')">Required</mat-error>
+            </div>
+          </mat-form-field>
+
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Description</mat-label>
+            <input matInput type="text" formControlName="description">
+          </mat-form-field>
+
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Item</mat-label>
+            <mat-select formControlName="item">
+                  <mat-option [value]="null">Select</mat-option>
+                  <mat-option *ngFor="let item of items" [value]="item.id">{{item.name}}</mat-option>
+            </mat-select>
+            <div *ngIf="saleForm.controls.item.invalid && (saleForm.controls.item.dirty || saleForm.controls.item.touched)">
+              <mat-error *ngIf="saleForm.controls.item?.hasError('required')">Required</mat-error>
+            </div>
+          </mat-form-field>
+
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Qty</mat-label>
+            <input matInput type="number" formControlName="qty">
+            <div *ngIf="saleForm.controls.qty.invalid && (saleForm.controls.qty.dirty || saleForm.controls.qty.touched)">
+              <mat-error *ngIf="saleForm.controls.qty?.hasError('required')">Required</mat-error>
+            </div>
+          </mat-form-field>
+
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Unit price</mat-label>
+            <input matInput type="number" formControlName="unit_price">
+            <div *ngIf="saleForm.controls.unit_price.invalid && (saleForm.controls.unit_price.dirty || saleForm.controls.unit_price.touched)">
+              <mat-error *ngIf="saleForm.controls.unit_price?.hasError('required')">Required</mat-error>
+            </div>
+          </mat-form-field>
+          <strong>Total: </strong> {{total | amount}}
+
+          <div class="mt-5">
+            <button [ngStyle]="{'background-color': submit? 'white':'#0087DD'}" [disabled]="!saleForm.valid" class="submit" type="submit" mat-button>
+              <span *ngIf="!submit" class="text-light">Update</span>
+              <div *ngIf="submit" class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </button>
+            <button (click)="confirmDelete()" class="submit ml-3 btn-danger" type="button" mat-button>
+              Delete
+            </button>
+          </div>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>

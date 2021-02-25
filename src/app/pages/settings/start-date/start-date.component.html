@@ -1,0 +1,43 @@
+<div class="dark-font bc-icons-2 breadcrumb">
+
+  <mdb-breadcrumb customClass="black-text grey lighten-5">
+    <mdb-breadcrumb-item>
+      <mdb-icon fas icon="angle-right" class="mr-1"></mdb-icon> <a [routerLink]="['/settings']">Settings</a>
+    </mdb-breadcrumb-item>
+    <mdb-breadcrumb-item class="active">
+      <mdb-icon fas icon="angle-right" class="mr-1"></mdb-icon> Start Date
+    </mdb-breadcrumb-item>
+  </mdb-breadcrumb>
+
+</div>
+
+<div *ngIf="!loading; else elseLoading" class="container">
+  <mat-card class="new-user-card">
+    <mat-card-content class="new-user-card-content">
+        <div>
+
+          <form  [formGroup]="dateForm" (ngSubmit)="onSubmit()">
+              <mat-form-field appearance="fill">
+                <mat-label>Choose a date</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="date">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+
+              <div class="mt-5">
+                <button [ngStyle]="{'background-color': submit? 'white':'#0087DD'}" [disabled]="!dateForm.valid" class="submit" type="submit" mat-button>
+                  <span *ngIf="!submit" class="text-light">Set</span>
+                  <div *ngIf="submit" class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </button>
+              </div>
+          </form>
+        </div>
+      </mat-card-content>
+  </mat-card>
+</div>
+
+<ng-template #elseLoading>
+  <app-loading></app-loading>
+</ng-template>

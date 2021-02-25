@@ -1,0 +1,44 @@
+.create{
+  button{
+    padding: 5px 20px;
+    border-radius: 5px;
+    background-color: rgb(255, 255, 255);
+    color: rgb(100, 100, 100);
+    border: unset;
+    font-size: 0.8em;
+    margin: 20px;
+
+    &:hover{
+      background-color: rgb(210, 210, 210);
+    }
+  }
+}
+
+.list{
+  background-color: #fff;
+}
+
+button.edit{
+  padding: 3px 10px;
+  font-size: 0.8em;
+  border: unset;
+  color: rgb(100, 100, 100);
+  border: 1px solid rgb(210, 210, 210);
+  border-radius: 5px;
+  margin: 0 3px;
+
+  &:hover{
+    background-color: rgb(210, 210, 210);
+  }
+}
+
+form{
+  width: 100%;
+  padding: 30px;
+  background-color: rgb(230, 230, 230);
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}

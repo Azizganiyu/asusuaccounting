@@ -1,0 +1,18 @@
+<div mat-dialog-title class="head">
+  <p>Confirm <mdb-icon class="ml-1" fas icon="question-circle"></mdb-icon></p>
+  <p><mdb-icon class="text-dark close" (click)="close()" far icon="times-circle"></mdb-icon></p>
+</div>
+
+<mat-dialog-content>
+
+<div>
+  <p class="title">{{data.title}}</p>
+    <p class="description">{{data.description}}</p>
+</div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button class="yes" (click)="yes()" mat-button [mat-dialog-close]="true" cdkFocusInitial>Yes</button>
+  <button class="no" (click)="no()" mat-button mat-dialog-close>No</button>
+</mat-dialog-actions>

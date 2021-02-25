@@ -1,0 +1,106 @@
+.sidenav-container {
+  height: 100%;
+  background-color: rgb(230, 230, 230);
+}
+
+.sidenav {
+  width: 240px;
+  background: #0087DD !important;;
+  padding: 10px;
+}
+
+
+.mat-nav-list{
+  padding-left: 20px;
+}
+
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+
+button.logout{
+  border: unset;
+  background-color: white;
+  color: #9540bf;
+}
+
+.router-link-active{
+  font-weight: bold;
+}
+
+.links{
+  color: white;
+
+  .link{
+    margin: 10px 0px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #fff;
+    padding: 10px 0;
+
+    a{
+      font-size: 0.8em;
+    }
+
+    mat-icon, mdb-icon{
+      width: 30px;
+    }
+  }
+}
+
+.brand{
+  display: flex;
+  align-items: center;
+}
+
+.details{
+  .vendor{
+    font-size: 0.6em;
+    color: rgb(100, 100, 100);
+  }
+  .vendor, .company{
+    line-height: 20px;
+  }
+}
+
+.user{
+   color: white;
+   word-wrap: break-word;
+
+  h5{
+    font-size: 0.6em;
+  }
+  h6{
+    font-size: 0.6em;
+  }
+}
+
+.logo{
+  img{
+    width: 60px;
+    cursor: pointer;
+  }
+}
+
+.logout{
+  padding: 5px 20px;
+  background-color: #0065a3;
+  border-radius: 40px;
+  font-weight: bold;
+}
+
+button.back{
+  border: unset;
+  border-radius: 5px;
+  font-size: 0.8em;
+  padding: 5px 20px;
+  background-color: unset;
+  color: rgb(100, 100, 100);
+
+  &:hover{
+    background-color: rgb(230, 230, 230);
+  }
+}

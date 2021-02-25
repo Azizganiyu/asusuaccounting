@@ -1,0 +1,129 @@
+<div class="container mt-4">
+  <div class="create">
+    <button (click)="accountCreateModal.show()">New Account</button>
+  </div>
+</div>
+
+<div class="list p-3 mt-5 mb-5" *ngIf="!loading; else elseLoading">
+  <table mdbTable small="true">
+    <thead>
+      <tr>
+        <th *ngFor="let head of headElements" scope="col">{{head}} </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr mdbTableCol *ngFor="let el of accounts">
+        <td>{{el.name}}</td>
+        <td>{{el.balance.toLocaleString()}}</td>
+        <td>
+          <button (click)="edit(el)" class="edit">Edit</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #elseLoading>
+  <app-loading></app-loading>
+</ng-template>
+
+<div [config]="{backdrop: false, ignoreBackdropClick: true}" style="overflow-y: auto" mdbModal #accountCreateModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myaccountCreateModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h5 class="modal-title w-100" id="myModalLabel">Create a new account</h5>
+      </div>
+      <div class="modal-body">
+        <form  [formGroup]="accountForm" (ngSubmit)="create()">
+
+          <mat-form-field appearance="standard">
+            <mat-label>Choose a date</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Name</mat-label>
+            <input matInput type="text" formControlName="name">
+            <div *ngIf="accountForm.controls.name.invalid && (accountForm.controls.name.dirty || accountForm.controls.name.touched)">
+              <mat-error *ngIf="accountForm.controls.name?.hasError('required')">Required</mat-error>
+            </div>
+          </mat-form-field>
+
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Starting Balance</mat-label>
+            <input matInput type="number" formControlName="start_balance">
+            <div *ngIf="accountForm.controls.start_balance.invalid && (accountForm.controls.start_balance.dirty || accountForm.controls.start_balance.touched)">
+              <mat-error *ngIf="accountForm.controls.start_balance?.hasError('required')">Required</mat-error>
+            </div>
+          </mat-form-field>
+
+          <div class="mt-5">
+            <button [ngStyle]="{'background-color': submit? 'white':'#0087DD'}" [disabled]="!accountForm.valid" class="submit" type="submit" mat-button>
+              <span *ngIf="!submit" class="text-light">Create</span>
+              <div *ngIf="submit" class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </button>
+          </div>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div [config]="{backdrop: false, ignoreBackdropClick: true}" style="overflow-y: auto" mdbModal #accountEditModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myaccountEditModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h5 class="modal-title w-100" id="myModalLabel">Edit account</h5>
+      </div>
+      <div class="modal-body">
+        <form  [formGroup]="accountForm" (ngSubmit)="update()">
+
+          <mat-form-field appearance="standard">
+            <mat-label>Choose a date</mat-label>
+            <input matInput [matDatepicker]="picker2" formControlName="date">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Name</mat-label>
+            <input matInput type="text" formControlName="name">
+            <div *ngIf="accountForm.controls.name.invalid && (accountForm.controls.name.dirty || accountForm.controls.name.touched)">
+              <mat-error *ngIf="accountForm.controls.name?.hasError('required')">Required</mat-error>
+            </div>
+          </mat-form-field>
+
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Starting Balance</mat-label>
+            <input matInput type="number" formControlName="start_balance">
+            <div *ngIf="accountForm.controls.start_balance.invalid && (accountForm.controls.start_balance.dirty || accountForm.controls.start_balance.touched)">
+              <mat-error *ngIf="accountForm.controls.start_balance?.hasError('required')">Required</mat-error>
+            </div>
+          </mat-form-field>
+
+          <div class="mt-5">
+            <button [ngStyle]="{'background-color': submit? 'white':'#0087DD'}" [disabled]="!accountForm.valid" class="submit" type="submit" mat-button>
+              <span *ngIf="!submit" class="text-light">Update</span>
+              <div *ngIf="submit" class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </button>
+            <button (click)="confirmDelete()" class="submit ml-3 btn-danger" type="button" mat-button>
+              Delete
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

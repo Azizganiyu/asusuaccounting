@@ -1,0 +1,24 @@
+<div class="dark-font bc-icons-2 breadcrumb">
+
+  <mdb-breadcrumb customClass="black-text grey lighten-5">
+    <mdb-breadcrumb-item>
+      <mdb-icon fas icon="angle-right" class="mr-1"></mdb-icon> <a [routerLink]="['/settings']">Settings</a>
+    </mdb-breadcrumb-item>
+    <mdb-breadcrumb-item class="active">
+      <mdb-icon fas icon="angle-right" class="mr-1"></mdb-icon> Chart of Accounts
+    </mdb-breadcrumb-item>
+  </mdb-breadcrumb>
+
+</div>
+
+<div class="conainer" *ngIf="!loading; else elseLoading">
+  <mat-tab-group>
+    <mat-tab *ngFor="let type of types" [label]="type.name">
+      <app-account-charts [id]="type.id"></app-account-charts>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+
+<ng-template #elseLoading>
+  <app-loading></app-loading>
+</ng-template>

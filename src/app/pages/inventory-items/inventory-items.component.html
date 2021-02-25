@@ -1,0 +1,159 @@
+<div class="container mt-4">
+  <div class="create">
+    <button (click)="inventoryCreateModal.show()">New Inventory</button>
+  </div>
+</div>
+
+<div class="list p-3 mt-5 mb-5" *ngIf="!loading; else elseLoading">
+  <table mdbTable small="true">
+    <thead>
+      <tr>
+        <th *ngFor="let head of headElements" scope="col">{{head}} </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr mdbTableCol *ngFor="let el of inventories">
+        <td>{{el.name}}</td>
+        <td>{{el.purchase_price | amount}}</td>
+        <td>{{el.sales_price | amount}}</td>
+        <td>{{el.qty_balance}}</td>
+        <td>{{el.unit_cost | amount}}</td>
+        <td>{{(el.qty_balance * el.unit_cost) | amount}}</td>
+        <td>
+          <button (click)="edit(el)" class="edit">Edit</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #elseLoading>
+  <app-loading></app-loading>
+</ng-template>
+
+<div [config]="{backdrop: false, ignoreBackdropClick: true}" style="overflow-y: auto" mdbModal #inventoryCreateModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myinventoryCreateModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h5 class="modal-title w-100" id="myModalLabel">Create a new inventory</h5>
+      </div>
+      <div class="modal-body">
+        <form  [formGroup]="inventoryForm" (ngSubmit)="create()">
+
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Name</mat-label>
+            <input matInput type="text" formControlName="name">
+            <div *ngIf="inventoryForm.controls.name.invalid && (inventoryForm.controls.name.dirty || inventoryForm.controls.name.touched)">
+              <mat-error *ngIf="inventoryForm.controls.name?.hasError('required')">Required</mat-error>
+            </div>
+          </mat-form-field>
+
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Purchase price  <span class="optional">[Optional]</span></mat-label>
+            <input matInput type="number" formControlName="purchase_price">
+          </mat-form-field>
+
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Sales price  <span class="optional">[Optional]</span></mat-label>
+            <input matInput type="number" formControlName="sales_price">
+          </mat-form-field>
+
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Description  <span class="optional">[Optional]</span></mat-label>
+            <input matInput type="text" formControlName="description">
+          </mat-form-field>
+
+          <div>
+            <h6><strong>Starting balance</strong> <span class="optional">&nbsp;[Optional]</span></h6>
+            <mat-form-field appearance="standard" class="form">
+              <mat-label>Qty owned</mat-label>
+              <input matInput type="number" formControlName="start_qty">
+            </mat-form-field>
+            <mat-form-field appearance="standard" class="form">
+              <mat-label>Average Cost</mat-label>
+              <input matInput type="number" formControlName="start_cost">
+            </mat-form-field>
+            <strong>Total: </strong> {{start_total.toLocaleString()}}
+          </div>
+
+          <div class="mt-5">
+            <button [ngStyle]="{'background-color': submit? 'white':'#0087DD'}" [disabled]="!inventoryForm.valid" class="submit" type="submit" mat-button>
+              <span *ngIf="!submit" class="text-light">Create</span>
+              <div *ngIf="submit" class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </button>
+          </div>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div [config]="{backdrop: false, ignoreBackdropClick: true}" style="overflow-y: auto" mdbModal #inventoryEditModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myinventoryEditModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h5 class="modal-title w-100" id="myModalLabel">Edit trasnfer</h5>
+      </div>
+      <div class="modal-body">
+        <form  [formGroup]="inventoryForm" (ngSubmit)="update()">
+
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Name</mat-label>
+            <input matInput type="text" formControlName="name">
+            <div *ngIf="inventoryForm.controls.name.invalid && (inventoryForm.controls.name.dirty || inventoryForm.controls.name.touched)">
+              <mat-error *ngIf="inventoryForm.controls.name?.hasError('required')">Required</mat-error>
+            </div>
+          </mat-form-field>
+
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Purchase price  <span class="optional">[Optional]</span></mat-label>
+            <input matInput type="number" formControlName="purchase_price">
+          </mat-form-field>
+
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Sales price  <span class="optional">[Optional]</span></mat-label>
+            <input matInput type="number" formControlName="sales_price">
+          </mat-form-field>
+
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Description  <span class="optional">[Optional]</span></mat-label>
+            <input matInput type="text" formControlName="description">
+          </mat-form-field>
+
+          <div>
+            <h6><strong>Starting balance</strong> <span class="optional">&nbsp;[Optional]</span></h6>
+            <mat-form-field appearance="standard" class="form">
+              <mat-label>Qty owned</mat-label>
+              <input matInput type="number" formControlName="start_qty">
+            </mat-form-field>
+            <mat-form-field appearance="standard" class="form">
+              <mat-label>Average Cost</mat-label>
+              <input matInput type="number" formControlName="start_cost">
+            </mat-form-field>
+            <strong>Total: </strong> {{start_total.toLocaleString()}}
+          </div>
+
+          <div class="mt-5">
+            <button [ngStyle]="{'background-color': submit? 'white':'#0087DD'}" [disabled]="!inventoryForm.valid" class="submit" type="submit" mat-button>
+              <span *ngIf="!submit" class="text-light">Update</span>
+              <div *ngIf="submit" class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </button>
+            <button (click)="confirmDelete()" class="submit ml-3 btn-danger" type="button" mat-button>
+              Delete
+            </button>
+          </div>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>

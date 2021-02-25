@@ -1,0 +1,39 @@
+<div class="container mt-4">
+  <div class="create">
+    <button
+    [useExistingCss]="true"
+    printSectionId="print-section"
+    ngxPrint>Print</button>
+    <button (click)="export()">Export Excel</button>
+  </div>
+</div>
+
+<div id="print-section" class="list p-3 mt-5 mb-5">
+  <div class="head mt-4 mb-4">
+    <h2><strong>{{data.title}}</strong></h2>
+    <div class="logo">
+      <img [src]="logo" alt="" *ngIf="logo" style="height: 100px;">
+    </div>
+  </div>
+  <div class="date mt-3 mb-3">
+    <h6 align="end"><strong>Date</strong></h6>
+    <h6 align="end">{{data.date}}</h6>
+  </div>
+  <div class="title mt-4 mb-4">
+    <h6><strong>{{data.subtitle}}</strong></h6>
+  </div>
+  <table mdbTable small="true" bordered="true">
+    <thead>
+      <tr>
+        <th *ngFor="let head of data.headElements" scope="col">{{head}} </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr mdbTableCol *ngFor="let el of data.entry">
+        <td>{{el.column1}}</td>
+        <td>{{el.column2}}</td>
+        <td>{{el.column3}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,56 @@
+.upload-body{
+  width: 100%;
+  border-radius: 5px;
+  background-color: white;
+  color: rgb(100, 100, 100);
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: .5s all ease;
+  border: 2px dashed gray;
+  overflow: hidden;
+}
+
+button.upload, button.add{
+  border: unset;
+  border: 1px solid  white;
+  padding: 1px 12px;
+  border-radius: 5px;
+  height: 40px;
+  cursor: pointer;
+  width: 100%;
+  color: white;
+}
+
+.file-input-wrapper{
+  overflow: hidden;
+  margin: 0 auto;
+  position: relative;
+  width: 100%;
+  cursor: pointer !important;
+}
+.file_input{
+  opacity: 0;
+  cursor: pointer !important;
+  height: 30px;
+  top:5px;
+  position: absolute;
+}
+
+.uploading{
+
+  img{
+      height: 150px;
+      width: 150px;
+      object-fit: contain;
+  }
+}
+
+
+.image{
+display: flex;
+flex-wrap: wrap;
+justify-content: center;
+}

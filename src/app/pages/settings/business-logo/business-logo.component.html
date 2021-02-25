@@ -1,0 +1,44 @@
+<div class="dark-font bc-icons-2 breadcrumb">
+
+  <mdb-breadcrumb customClass="black-text grey lighten-5">
+    <mdb-breadcrumb-item>
+      <mdb-icon fas icon="angle-right" class="mr-1"></mdb-icon> <a [routerLink]="['/settings']">Settings</a>
+    </mdb-breadcrumb-item>
+    <mdb-breadcrumb-item class="active">
+      <mdb-icon fas icon="angle-right" class="mr-1"></mdb-icon> Business Logo
+    </mdb-breadcrumb-item>
+  </mdb-breadcrumb>
+
+</div>
+
+<div *ngIf="!loading; else elseLoading" class="container">
+  <mat-card class="new-user-card">
+    <mat-card-content class="new-user-card-content">
+      <img [src]="logo" alt="" *ngIf="logo" style="height: 100px;">
+      <div class="upload-body mt-5">
+        <div class="details text-center" *ngIf="!uploading">
+            <h5>{{logo? 'Change Logo' : 'Upload Logo'}}</h5>
+            <div class="button mt-3">
+                <div class="file-input-wrapper">
+                    <input (change)="fileProgress($event)" name="image" type="file" class="file_input" />
+                    <button class="bg-primary upload">Select</button>
+                </div>
+                <p class="mt-2 text-center">{{imageInfo}}</p>
+            </div>
+        </div>
+        <div class="uploading  text-center" *ngIf="uploading">
+            <img [src]="imagePreview" alt="">
+            <p *ngIf="progress" class="mt-1">
+              <mat-progress-bar mode="determinate" [value]="progress"></mat-progress-bar>
+              <span>{{progress}}%</span>
+            </p>
+        </div>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<ng-template #elseLoading>
+  <app-loading></app-loading>
+</ng-template>
