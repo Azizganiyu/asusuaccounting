@@ -107,7 +107,10 @@
             <mat-select formControlName="receipt_type">
                   <mat-option [value]="null">Select</mat-option>
                   <mat-option [value]="'item'">Item</mat-option>
-                  <mat-option [value]="'account receivable'">Account Payable</mat-option>
+                  <mat-option [value]="'account receivable'">Account Receivable</mat-option>
+                  <mat-option [value]="'capital account'">Capital Accounts</mat-option>
+                  <mat-option [value]="'fixed asset'">Fixed Assets, at cost</mat-option>
+                  <mat-option [value]="'intangible asset'">Intangible Assets, at cost</mat-option>
                   <mat-option [value]="'coa'">Others</mat-option>
             </mat-select>
             <div *ngIf="receiptForm.controls.receipt_type.invalid && (receiptForm.controls.receipt_type.dirty || receiptForm.controls.receipt_type.touched)">
@@ -124,6 +127,45 @@
               </mat-select>
               <div *ngIf="receiptForm.controls.item.invalid && (receiptForm.controls.item.dirty || receiptForm.controls.item.touched)">
                 <mat-error *ngIf="receiptForm.controls.item?.hasError('required')">Required</mat-error>
+              </div>
+            </mat-form-field>
+          </div>
+
+          <div *ngIf="receipt_type == 'capital account'">
+            <mat-form-field appearance="standard" class="form">
+              <mat-label>Account</mat-label>
+              <mat-select formControlName="capital_account">
+                    <mat-option [value]="null">Select</mat-option>
+                    <mat-option *ngFor="let item of capitalAccounts" [value]="item.id">{{item.name}}</mat-option>
+              </mat-select>
+              <div *ngIf="receiptForm.controls.capital_account.invalid && (receiptForm.controls.capital_account.dirty || receiptForm.controls.capital_account.touched)">
+                <mat-error *ngIf="receiptForm.controls.capital_account?.hasError('required')">Required</mat-error>
+              </div>
+            </mat-form-field>
+          </div>
+
+          <div *ngIf="receipt_type == 'fixed asset'">
+            <mat-form-field appearance="standard" class="form">
+              <mat-label>Asset</mat-label>
+              <mat-select formControlName="fixed_asset">
+                    <mat-option [value]="null">Select</mat-option>
+                    <mat-option *ngFor="let item of fixedAssets" [value]="item.id">{{item.name}}</mat-option>
+              </mat-select>
+              <div *ngIf="receiptForm.controls.fixed_asset.invalid && (receiptForm.controls.fixed_asset.dirty || receiptForm.controls.fixed_asset.touched)">
+                <mat-error *ngIf="receiptForm.controls.fixed_asset?.hasError('required')">Required</mat-error>
+              </div>
+            </mat-form-field>
+          </div>
+
+          <div *ngIf="receipt_type == 'intangible asset'">
+            <mat-form-field appearance="standard" class="form">
+              <mat-label>Asset</mat-label>
+              <mat-select formControlName="intangible_asset">
+                    <mat-option [value]="null">Select</mat-option>
+                    <mat-option *ngFor="let item of intangibleAssets" [value]="item.id">{{item.name}}</mat-option>
+              </mat-select>
+              <div *ngIf="receiptForm.controls.intangible_asset.invalid && (receiptForm.controls.intangible_asset.dirty || receiptForm.controls.intangible_asset.touched)">
+                <mat-error *ngIf="receiptForm.controls.intangible_asset?.hasError('required')">Required</mat-error>
               </div>
             </mat-form-field>
           </div>
@@ -275,6 +317,9 @@
                   <mat-option [value]="null">Select</mat-option>
                   <mat-option [value]="'item'">Item</mat-option>
                   <mat-option [value]="'account receivable'">Account Receivable</mat-option>
+                  <mat-option [value]="'capital account'">Capital Accounts</mat-option>
+                  <mat-option [value]="'fixed asset'">Fixed Assets, at cost</mat-option>
+                  <mat-option [value]="'intangible asset'">Intangible Assets, at cost</mat-option>
                   <mat-option [value]="'coa'">Others</mat-option>
             </mat-select>
             <div *ngIf="receiptForm.controls.receipt_type.invalid && (receiptForm.controls.receipt_type.dirty || receiptForm.controls.receipt_type.touched)">
@@ -291,6 +336,45 @@
               </mat-select>
               <div *ngIf="receiptForm.controls.item.invalid && (receiptForm.controls.item.dirty || receiptForm.controls.item.touched)">
                 <mat-error *ngIf="receiptForm.controls.item?.hasError('required')">Required</mat-error>
+              </div>
+            </mat-form-field>
+          </div>
+
+          <div *ngIf="receipt_type == 'capital account'">
+            <mat-form-field appearance="standard" class="form">
+              <mat-label>Account</mat-label>
+              <mat-select formControlName="capital_account">
+                    <mat-option [value]="null">Select</mat-option>
+                    <mat-option *ngFor="let item of capitalAccounts" [value]="item.id">{{item.name}}</mat-option>
+              </mat-select>
+              <div *ngIf="receiptForm.controls.capital_account.invalid && (receiptForm.controls.capital_account.dirty || receiptForm.controls.capital_account.touched)">
+                <mat-error *ngIf="receiptForm.controls.capital_account?.hasError('required')">Required</mat-error>
+              </div>
+            </mat-form-field>
+          </div>
+
+          <div *ngIf="receipt_type == 'fixed asset'">
+            <mat-form-field appearance="standard" class="form">
+              <mat-label>Asset</mat-label>
+              <mat-select formControlName="fixed_asset">
+                    <mat-option [value]="null">Select</mat-option>
+                    <mat-option *ngFor="let item of fixedAssets" [value]="item.id">{{item.name}}</mat-option>
+              </mat-select>
+              <div *ngIf="receiptForm.controls.fixed_asset.invalid && (receiptForm.controls.fixed_asset.dirty || receiptForm.controls.fixed_asset.touched)">
+                <mat-error *ngIf="receiptForm.controls.fixed_asset?.hasError('required')">Required</mat-error>
+              </div>
+            </mat-form-field>
+          </div>
+
+          <div *ngIf="receipt_type == 'intangible asset'">
+            <mat-form-field appearance="standard" class="form">
+              <mat-label>Asset</mat-label>
+              <mat-select formControlName="intangible_asset">
+                    <mat-option [value]="null">Select</mat-option>
+                    <mat-option *ngFor="let item of intangibleAssets" [value]="item.id">{{item.name}}</mat-option>
+              </mat-select>
+              <div *ngIf="receiptForm.controls.intangible_asset.invalid && (receiptForm.controls.intangible_asset.dirty || receiptForm.controls.intangible_asset.touched)">
+                <mat-error *ngIf="receiptForm.controls.intangible_asset?.hasError('required')">Required</mat-error>
               </div>
             </mat-form-field>
           </div>

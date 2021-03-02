@@ -27,6 +27,18 @@ import { SaleInvoiceComponent } from './sale-invoice/sale-invoice.component';
 import { ReceiptsComponent } from './receipts/receipts.component';
 import { ReceiptRecordComponent } from './regords/receipt-record/receipt-record.component';
 import { JournalRecordComponent } from './journal-record/journal-record.component';
+import { JournalEntryRecordComponent } from './regords/journal-entry-record/journal-entry-record.component';
+import { CapitalAccountComponent } from './capital-account/capital-account.component';
+import { IntangibleAssetComponent } from './intangible-asset/intangible-asset.component';
+import { IntangibleAssetAmortizationComponent } from './intangible-asset-amortization/intangible-asset-amortization.component';
+import { FixedAssetComponent } from './fixed-asset/fixed-asset.component';
+import { FixedAssetDepreciationComponent } from './fixed-asset-depreciation/fixed-asset-depreciation.component';
+import { DepreciationRecordComponent } from './regords/depreciation-record/depreciation-record.component';
+import { AmortizationRecordComponent } from './regords/amortization-record/amortization-record.component';
+import { ReportsComponent } from './reports/reports.component';
+import { BalanceSheetComponent } from './reports/balance-sheet/balance-sheet.component';
+import { IncomeExpenditureComponent } from './reports/income-expenditure/income-expenditure.component';
+import { LedgerComponent } from './reports/ledger/ledger.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +64,19 @@ import { JournalRecordComponent } from './journal-record/journal-record.componen
   SaleInvoiceComponent,
   ReceiptsComponent,
   ReceiptRecordComponent,
-  JournalRecordComponent
+  JournalRecordComponent,
+  JournalEntryRecordComponent,
+  CapitalAccountComponent,
+  IntangibleAssetComponent,
+  IntangibleAssetAmortizationComponent,
+  FixedAssetComponent,
+  FixedAssetDepreciationComponent,
+  DepreciationRecordComponent,
+  AmortizationRecordComponent,
+  ReportsComponent,
+  BalanceSheetComponent,
+  IncomeExpenditureComponent,
+  LedgerComponent
 ],
   imports: [
     CommonModule,

@@ -1,0 +1,31 @@
+<div class="dark-font bc-icons-2 breadcrumb">
+
+  <mdb-breadcrumb customClass="black-text grey lighten-5">
+    <mdb-breadcrumb-item>
+      <mdb-icon fas icon="angle-right" class="mr-1"></mdb-icon> <a [routerLink]="['']">Reports</a>
+    </mdb-breadcrumb-item>
+    <!-- <mdb-breadcrumb-item class="active">
+      <mdb-icon fas icon="angle-right" class="mr-1"></mdb-icon> Careers
+    </mdb-breadcrumb-item> -->
+  </mdb-breadcrumb>
+
+</div>
+
+<div class="col-12 col-md-6">
+
+  <div class="list-group mt-5">
+    <a href="javascript:void()" class="list-group-item active waves-light" mdbWavesEffect>
+      Financial Statement
+    </a>
+    <a [routerLink]="['/income-expenditure']"  class="list-group-item waves-light" mdbWavesEffect>Profit and Loss Statement</a>
+    <a [routerLink]="['/balance-sheet']" class="list-group-item waves-light" mdbWavesEffect> Balance Sheet</a>
+  </div>
+
+  <div class="list-group mt-5">
+    <a href="javascript:void()" class="list-group-item active waves-light" mdbWavesEffect>
+      General Ledger
+    </a>
+    <a [routerLink]="['/ledger']" class="list-group-item waves-light" mdbWavesEffect>Trial Balance</a>
+  </div>
+
+</div>

@@ -18,6 +18,7 @@ export class AccountChartsComponent implements OnInit {
   accountForm = this.fb.group({
     name: ['', [Validators.required]],
     sub_id: [null, [Validators.required]],
+    start_balance: [0],
     id: [''],
   })
 
@@ -31,6 +32,7 @@ export class AccountChartsComponent implements OnInit {
   loading: boolean = true
   accounts: any = []
   @Input() id;
+  @Input() code;
 
   headElements = ['Name', 'Action',];
 
@@ -112,6 +114,7 @@ export class AccountChartsComponent implements OnInit {
 
   create(){
     this.submit = true
+    console.log(this.accountForm.value)
     this.coa.create(this.accountForm.value, this.id).subscribe((data: any) => {
       this.getAccounts()
       this.helper.showSuccess(data.message, 'Success!')

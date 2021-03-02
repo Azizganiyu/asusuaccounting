@@ -3,6 +3,8 @@ import { FormBuilder, Validators, FormArray } from '@angular/forms';
 import { JournalService } from 'src/app/services/journal/journal.service';
 import { HelperService } from 'src/app/services/helper/helper.service';
 import { ChartOfAccountService } from 'src/app/services/chart-of-account/chart-of-account.service';
+import { DataStorageService } from 'src/app/services/data-storage/data-storage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-journal-record',
@@ -18,20 +20,7 @@ export class JournalRecordComponent implements OnInit {
     date: [new Date(), [Validators.required]],
     journal_reference: [{value: '', disabled: true}, [Validators.required]],
     narration: [''],
-    transactions: this.fb.array([
-      this.fb.group({
-          account: ['', [Validators.required]],
-          description:  [''],
-          debit:  [0],
-          credit:  [0],
-      }),
-      this.fb.group({
-          account: ['', [Validators.required]],
-          description:  [''],
-          debit:  [0],
-          credit:  [0],
-      })
-    ]),
+    entries: this.fb.array([]),
     id: [''],
   })
 
@@ -43,39 +32,47 @@ export class JournalRecordComponent implements OnInit {
 
   debit: number = 0;
   credit: number = 0
-  headElements = ['Name', 'Email', 'Invoices', 'Accounts receivable', 'Action'];
+  headElements = ['Date', 'Reference', 'Narration', 'Debit', 'Credit', 'status', 'Action'];
 
    constructor(
     private fb: FormBuilder,
     private journalService: JournalService,
     private helper: HelperService,
     private coa: ChartOfAccountService,
+    private dataService: DataStorageService,
+    private router: Router
   ) {
     this.generateReferenceNumber()
     this.getCoas()
-    //this.getJournals()
+    this.getJournals()
   }
 
-  get transactions() {
-    return this.journalForm.get('transactions') as FormArray;
+  get entries() {
+    return this.journalForm.get('entries') as FormArray;
   }
 
-  addtransaction() {
+  new(){
+    this.addEntry()
+    this.addEntry()
+    this.journalCreateModal.show()
+  }
+
+  addEntry() {
     const control = this.fb.group({
       account: ['', [Validators.required]],
       description:  [''],
       debit:  [0],
       credit:  [0],
     });
-    this.transactions.push(control);
+    this.entries.push(control);
   }
 
-  removeTransaction(index: number) {
-    this.transactions.removeAt(index);
+  removeEntry(index: number) {
+    this.entries.removeAt(index);
   }
 
   ngOnInit(): void {
-    this.journalForm.get('transactions').valueChanges.subscribe((val) => {
+    this.journalForm.get('entries').valueChanges.subscribe((val) => {
       console.log(val)
       this.getTotal(val)
     })
@@ -142,11 +139,19 @@ export class JournalRecordComponent implements OnInit {
   }
 
   edit(journal){
-    this.journalForm.get('name').patchValue(journal.name)
-    this.journalForm.get('email').patchValue(journal.email)
-    this.journalForm.get('identifier').patchValue(journal.identifier)
-    this.journalForm.get('start_balance').patchValue(journal.start_balance)
+    this.journalForm.get('narration').patchValue(journal.narration)
+    this.journalForm.get('journal_reference').patchValue(journal.journal_reference)
     this.journalForm.get('id').patchValue(journal.id)
+    this.journalForm.get('date').patchValue(new Date(journal.date))
+    JSON.parse(journal.entries).forEach(element => {
+      const control = this.fb.group({
+        account: [element.account, [Validators.required]],
+        description:  [element.description],
+        debit:  [element.debit],
+        credit:  [element.credit],
+      });
+      this.entries.push(control);
+    });
     this.journalEditModal.show()
   }
 
@@ -181,7 +186,31 @@ export class JournalRecordComponent implements OnInit {
   resetForm(){
     this.journalForm.reset()
     this.generateReferenceNumber()
+    this.entries.clear()
     this.journalForm.get('date').patchValue(new Date())
+  }
+
+  view(el){
+    let data = {
+      headElements : ['Account', 'Description', 'Debit', 'Credit'],
+      title: 'Journal Entry',
+      balanced: el.balanced,
+      debit: el.debit,
+      narration: el.narration,
+      credit: el.credit,
+      subtitle: el.description,
+      date: this.helper.formatDate(el.date),
+      reference: el.journal_reference,
+      entry: JSON.parse(el.entries).map((entry) => {
+        entry.account = el.transactions.filter((item) => {
+          return item.account_id == entry.account
+        })[0].account.name
+        return entry
+      }),
+    }
+
+    this.dataService.reportData = data
+    this.router.navigate(['journal-record'])
   }
 
 

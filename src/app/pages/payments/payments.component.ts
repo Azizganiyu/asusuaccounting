@@ -3,10 +3,13 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AccountInventoryService } from 'src/app/services/account-inventory/account-inventory.service';
 import { AccountTransferService } from 'src/app/services/account-transfer/account-transfer.service';
+import { CapitalAccountService } from 'src/app/services/capital-account/capital-account.service';
 import { ChartOfAccountService } from 'src/app/services/chart-of-account/chart-of-account.service';
 import { CustomerService } from 'src/app/services/customer/customer.service';
 import { DataStorageService } from 'src/app/services/data-storage/data-storage.service';
+import { FixedAssetService } from 'src/app/services/fixed-asset/fixed-asset.service';
 import { HelperService } from 'src/app/services/helper/helper.service';
+import { IntangibleAssetService } from 'src/app/services/intangible-asset/intangible-asset.service';
 import { PaymentService } from 'src/app/services/payment/payment.service';
 import { PurchaseService } from 'src/app/services/purchase/purchase.service';
 import { SupplierService } from 'src/app/services/supplier/supplier.service';
@@ -27,20 +30,23 @@ export class PaymentsComponent implements OnInit {
 
   paymentForm = this.fb.group({
     date: [new Date(), [Validators.required]],
-    paid_from: ['', [Validators.required]],
-    paid_from_account: ['', [Validators.required]],
-    paid_from_id: ['', [Validators.required]],
+    paid_from: [null, [Validators.required]],
+    paid_from_account: [null, [Validators.required]],
+    paid_from_id: [null, [Validators.required]],
     item: [null],
     qty: [0, [Validators.required]],
     unit_price: [0, [Validators.required]],
-    payee_type: [''],
-    payment_type: ['', [Validators.required]],
-    supplier_payable: [''],
-    invoice_payable: [''],
-    coa: [''],
+    payee_type: [null],
+    payment_type: [null, [Validators.required]],
+    supplier_payable: [null],
+    invoice_payable: [null],
+    coa: [null],
     payee: [''],
     payment_number: [{ value: '', disabled: true }, [Validators.required]],
     description: [''],
+    capital_account: [null],
+    fixed_asset: [null],
+    intangible_asset: [null],
     id: [''],
   })
 
@@ -57,6 +63,9 @@ export class PaymentsComponent implements OnInit {
   purchases: any = []
   invoices: any = []
   coas: any []
+  capitalAccounts: any []
+  fixedAssets: any []
+  intangibleAssets: any []
 
   headElements = ['Date', 'Description', 'Payer', 'Account', 'Amount paid', 'Action'];
 
@@ -72,6 +81,10 @@ export class PaymentsComponent implements OnInit {
     private inventoryService: AccountInventoryService,
     private transferService: AccountTransferService,
     private purchaseService: PurchaseService,
+    private intangibleAssetService: IntangibleAssetService,
+    private fixedAssetService: FixedAssetService,
+    private capitalService: CapitalAccountService,
+
   ) {
     this.generatePaymentNumber()
     this.getItem()
@@ -81,6 +94,9 @@ export class PaymentsComponent implements OnInit {
     this.getPurchases()
     this.getCoas()
     this.getPayments()
+    this.getIntangibleAssets()
+    this.getFixedAssets()
+    this.getCapitalAccounts()
   }
 
   ngOnInit(): void {
@@ -151,9 +167,32 @@ export class PaymentsComponent implements OnInit {
     })
   }
 
+  getIntangibleAssets(){
+    this.intangibleAssetService.getAssets().subscribe((data: any) => {
+      this.intangibleAssets = data.data
+    }, (error => {
+      console.log(error)
+    }))
+  }
+
+  getFixedAssets(){
+    this.fixedAssetService.getAssets().subscribe((data: any) => {
+      this.fixedAssets = data.data
+    }, (error => {
+      console.log(error)
+    }))
+  }
+
+  getCapitalAccounts(){
+    this.capitalService.getCapitals().subscribe((data: any) => {
+      this.capitalAccounts = data.data
+    }, (error => {
+      console.log(error)
+    }))
+  }
+
   getCoas(){
     this.coa.getSubs().subscribe((data : any) => {
-      console.log(data.data)
       if(data.data){
         this.coas = data.data
       }
@@ -164,7 +203,6 @@ export class PaymentsComponent implements OnInit {
 
   getPurchases(){
     this.purchaseService.getPurchases().subscribe((data: any) => {
-      console.log(data)
       this.purchases = data.data
     }, (error => {
       console.log(error)
@@ -210,7 +248,6 @@ export class PaymentsComponent implements OnInit {
 
   getAccounts(){
     this.transferService.getMergedAccounts().subscribe((data: any) => {
-      console.log(data)
       this.accounts = data.data
     }, (error => {
       console.log(error)
@@ -220,7 +257,6 @@ export class PaymentsComponent implements OnInit {
   getPayments(){
     this.loading = true
     this.paymentService.getPayments().subscribe((data: any) => {
-      console.log(data)
       this.payments = data.data
       this.loading = false
     }, (error => {
@@ -268,6 +304,9 @@ export class PaymentsComponent implements OnInit {
     }
     this.paymentForm.get('payment_type').patchValue(payment.payment_type)
     this.paymentForm.get('item').patchValue(payment.item)
+    this.paymentForm.get('capital_account').patchValue(payment.capital_account)
+    this.paymentForm.get('fixed_asset').patchValue(payment.fixed_asset)
+    this.paymentForm.get('intangible_asset').patchValue(payment.intangible_asset)
     this.paymentForm.get('coa').patchValue(payment.coa)
     this.paymentForm.get('supplier_payable').patchValue(payment.supplier_payable)
     this.paymentForm.get('invoice_payable').patchValue(payment.invoice_payable)
@@ -340,12 +379,30 @@ export class PaymentsComponent implements OnInit {
       this.paymentForm.get('supplier_payable').clearValidators()
       this.paymentForm.get('invoice_payable').clearValidators()
       this.paymentForm.get('item').clearValidators()
+      this.paymentForm.get('capital_account').clearValidators()
+      this.paymentForm.get('fixed_asset').clearValidators()
+      this.paymentForm.get('intangible_asset').clearValidators()
+      this.paymentForm.get('capital_account').reset()
+      this.paymentForm.get('fixed_asset').reset()
+      this.paymentForm.get('intangible_asset').reset()
       this.paymentForm.get('supplier_payable').reset()
       this.paymentForm.get('invoice_payable').reset()
       this.paymentForm.get('coa').reset()
       this.paymentForm.get('item').reset()
     if(val == 'item'){
       this.paymentForm.get('item').setValidators(Validators.required)
+    }
+
+    if(val == 'capital account'){
+      this.paymentForm.get('capital_account').setValidators(Validators.required)
+    }
+
+    if(val == 'fixed asset'){
+      this.paymentForm.get('fixed_asset').setValidators(Validators.required)
+    }
+
+    if(val == 'intangible_asset'){
+      this.paymentForm.get('intangible_asset').setValidators(Validators.required)
     }
 
     if(val == 'account payable'){
@@ -363,6 +420,15 @@ export class PaymentsComponent implements OnInit {
   getPaymentType(payment){
     if(payment.payment_type == 'item'){
       return payment.inventory.name
+    }
+    else if(payment.payment_type == 'capital account'){
+      return 'Capital account - '+payment.capital.name
+    }
+    else if(payment.payment_type == 'fixed asset'){
+      return 'Fixed asset, at cost - '+payment.fixed.name
+    }
+    else if(payment.payment_type == 'intangible asset'){
+      return 'Intangible asset, at cost - '+payment.intangible.name
     }
     else if(payment.payment_type == 'account payable'){
       return 'Accounts payable - '+payment.supplier.name+' - Purchase Invoice - '+payment.invoice.invoice_number

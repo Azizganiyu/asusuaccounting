@@ -67,6 +67,11 @@
             </div>
           </mat-form-field>
 
+          <mat-form-field *ngIf="code == 3 || code == 4 || code == 5" appearance="standard" class="form">
+            <mat-label>Start balance</mat-label>
+            <input matInput type="number" formControlName="start_balance">
+          </mat-form-field>
+
           <div class="mt-5">
             <button [ngStyle]="{'background-color': submit? 'white':'#0087DD'}" [disabled]="!accountForm.valid" class="submit" type="submit" mat-button>
               <span *ngIf="!submit" class="text-light">Create</span>
@@ -109,6 +114,11 @@
             <div *ngIf="accountForm.controls.sub_id.invalid && (accountForm.controls.sub_id.dirty || accountForm.controls.sub_id.touched)">
               <mat-error *ngIf="accountForm.controls.sub_id?.hasError('required')">Required</mat-error>
             </div>
+          </mat-form-field>
+
+          <mat-form-field *ngIf="code == 3 || code == 4 || code == 5" appearance="standard" class="form">
+            <mat-label>Start balance</mat-label>
+            <input matInput type="number" formControlName="start_balance">
           </mat-form-field>
 
           <div class="mt-5">

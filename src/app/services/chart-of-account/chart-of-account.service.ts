@@ -82,7 +82,7 @@ export class ChartOfAccountService {
         this.http
           .post(
             this.helper.getApiUrl() + "aas/coa/create",
-            {name: data.name, sub_id: data.sub_id, type_id: id},
+            {name: data.name, sub_id: data.sub_id, type_id: id, start_balance: data.start_balance},
             {headers: this.helper.header()}
           )
       );

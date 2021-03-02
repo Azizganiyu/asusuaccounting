@@ -3,10 +3,13 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AccountInventoryService } from 'src/app/services/account-inventory/account-inventory.service';
 import { AccountTransferService } from 'src/app/services/account-transfer/account-transfer.service';
+import { CapitalAccountService } from 'src/app/services/capital-account/capital-account.service';
 import { ChartOfAccountService } from 'src/app/services/chart-of-account/chart-of-account.service';
 import { CustomerService } from 'src/app/services/customer/customer.service';
 import { DataStorageService } from 'src/app/services/data-storage/data-storage.service';
+import { FixedAssetService } from 'src/app/services/fixed-asset/fixed-asset.service';
 import { HelperService } from 'src/app/services/helper/helper.service';
+import { IntangibleAssetService } from 'src/app/services/intangible-asset/intangible-asset.service';
 import { ReceiptService } from 'src/app/services/receipt/receipt.service';
 import { SaleService } from 'src/app/services/sale/sale.service';
 import { SupplierService } from 'src/app/services/supplier/supplier.service';
@@ -27,20 +30,23 @@ export class ReceiptsComponent implements OnInit {
 
   receiptForm = this.fb.group({
     date: [new Date(), [Validators.required]],
-    received_in: ['', [Validators.required]],
-    received_in_account: ['', [Validators.required]],
-    received_in_id: ['', [Validators.required]],
+    received_in: [null, [Validators.required]],
+    received_in_account: [null, [Validators.required]],
+    received_in_id: [null, [Validators.required]],
     item: [null],
     qty: [0, [Validators.required]],
     unit_price: [0, [Validators.required]],
-    payer_type: [''],
-    receipt_type: ['', [Validators.required]],
-    customer_receivable: [''],
-    invoice_receivable: [''],
-    coa: [''],
+    payer_type: [null],
+    receipt_type: [null, [Validators.required]],
+    customer_receivable: [null],
+    invoice_receivable: [null],
+    coa: [null],
     payer: [''],
     receipt_number: [{ value: '', disabled: true }, [Validators.required]],
     description: [''],
+    capital_account: [null],
+    fixed_asset: [null],
+    intangible_asset: [null],
     id: [''],
   })
 
@@ -57,6 +63,9 @@ export class ReceiptsComponent implements OnInit {
   sales: any = []
   invoices: any = []
   coas: any []
+  capitalAccounts: any []
+  fixedAssets: any []
+  intangibleAssets: any []
 
   headElements = ['Date', 'Description', 'Payer', 'Account', 'Amount Received', 'Action'];
 
@@ -72,6 +81,9 @@ export class ReceiptsComponent implements OnInit {
     private inventoryService: AccountInventoryService,
     private transferService: AccountTransferService,
     private saleService: SaleService,
+    private intangibleAssetService: IntangibleAssetService,
+    private fixedAssetService: FixedAssetService,
+    private capitalService: CapitalAccountService,
   ) {
     this.generateReceiptNumber()
     this.getItem()
@@ -81,6 +93,9 @@ export class ReceiptsComponent implements OnInit {
     this.getSales()
     this.getCoas()
     this.getReceipts()
+    this.getIntangibleAssets()
+    this.getFixedAssets()
+    this.getCapitalAccounts()
   }
 
   ngOnInit(): void {
@@ -149,6 +164,30 @@ export class ReceiptsComponent implements OnInit {
         })
       }
     })
+  }
+
+  getIntangibleAssets(){
+    this.intangibleAssetService.getAssets().subscribe((data: any) => {
+      this.intangibleAssets = data.data
+    }, (error => {
+      console.log(error)
+    }))
+  }
+
+  getFixedAssets(){
+    this.fixedAssetService.getAssets().subscribe((data: any) => {
+      this.fixedAssets = data.data
+    }, (error => {
+      console.log(error)
+    }))
+  }
+
+  getCapitalAccounts(){
+    this.capitalService.getCapitals().subscribe((data: any) => {
+      this.capitalAccounts = data.data
+    }, (error => {
+      console.log(error)
+    }))
   }
 
   getCoas(){
@@ -268,6 +307,9 @@ export class ReceiptsComponent implements OnInit {
     }
     this.receiptForm.get('receipt_type').patchValue(receipt.receipt_type)
     this.receiptForm.get('item').patchValue(receipt.item)
+    this.receiptForm.get('capital_account').patchValue(receipt.capital_account)
+    this.receiptForm.get('fixed_asset').patchValue(receipt.fixed_asset)
+    this.receiptForm.get('intangible_asset').patchValue(receipt.intangible_asset)
     this.receiptForm.get('coa').patchValue(receipt.coa)
     this.receiptForm.get('customer_receivable').patchValue(receipt.customer_receivable)
     this.receiptForm.get('invoice_receivable').patchValue(receipt.invoice_receivable)
@@ -340,12 +382,30 @@ export class ReceiptsComponent implements OnInit {
       this.receiptForm.get('customer_receivable').clearValidators()
       this.receiptForm.get('invoice_receivable').clearValidators()
       this.receiptForm.get('item').clearValidators()
+      this.receiptForm.get('capital_account').clearValidators()
+      this.receiptForm.get('fixed_asset').clearValidators()
+      this.receiptForm.get('intangible_asset').clearValidators()
+      this.receiptForm.get('capital_account').reset()
+      this.receiptForm.get('fixed_asset').reset()
+      this.receiptForm.get('intangible_asset').reset()
       this.receiptForm.get('customer_receivable').reset()
       this.receiptForm.get('invoice_receivable').reset()
       this.receiptForm.get('coa').reset()
       this.receiptForm.get('item').reset()
     if(val == 'item'){
       this.receiptForm.get('item').setValidators(Validators.required)
+    }
+
+    if(val == 'capital account'){
+      this.receiptForm.get('capital_account').setValidators(Validators.required)
+    }
+
+    if(val == 'fixed asset'){
+      this.receiptForm.get('fixed_asset').setValidators(Validators.required)
+    }
+
+    if(val == 'intangible_asset'){
+      this.receiptForm.get('intangible_asset').setValidators(Validators.required)
     }
 
     if(val == 'account receivable'){
@@ -366,6 +426,15 @@ export class ReceiptsComponent implements OnInit {
     }
     else if(receipt.receipt_type == 'account receivable'){
       return 'Accounts receivable - '+receipt.supplier.name+' - Sale Invoice - '+receipt.invoice.invoice_number
+    }
+    else if(receipt.receipt_type == 'capital account'){
+      return 'Capital account - '+receipt.capital.name
+    }
+    else if(receipt.receipt_type == 'fixed asset'){
+      return 'Fixed asset, at cost - '+receipt.fixed.name
+    }
+    else if(receipt.receipt_type == 'intangible asset'){
+      return 'Intangible asset, at cost - '+receipt.intangible.name
     }
     else if(receipt.receipt_type == 'coa'){
       return receipt.account.name

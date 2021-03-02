@@ -14,7 +14,7 @@
     <tbody>
       <tr mdbTableCol *ngFor="let el of accounts">
         <td>{{el.name}}</td>
-        <td>{{el.balance.toLocaleString()}}</td>
+        <td>{{el.balance | amount}}</td>
         <td>
           <button (click)="edit(el)" class="edit">Edit</button>
         </td>

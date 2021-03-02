@@ -38,37 +38,8 @@
 
 <div *ngIf="showResult; else showLoader " class="animated fadeIn row p-3">
 
-  <div class="col-12 col-sm-6 col-md-3">
-    <div class="box color-2">
-      <div class="ellips">
-        <i class="icon fa fa-database"></i>
-        <i class="fa fa-bars"></i>
-      </div>
-      <div class="content">
-        <div class="detail">
-          <span class="title">Income</span>
-          <span class="count">₦{{'0'}}</span>
-        </div>
-      </div>
-    </div>
-  </div>
+  <div  class="col-12 col-md-6">
 
-  <div class="col-12 col-sm-6 col-md-3">
-    <div class="box color-1">
-      <div class="ellips">
-        <i class="icon fa fa-database"></i>
-        <i class="fa fa-bars"></i>
-      </div>
-      <div class="content">
-        <div class="detail">
-          <span class="title">Expenses</span>
-          <span class="count">₦{{'0'}}</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div  class="col-12 col-sm-6 col-md-3">
     <div class="box color-3">
       <div class="ellips">
         <i class="icon fa fa-database"></i>
@@ -77,37 +48,28 @@
       <div class="content">
         <div class="detail">
           <span class="title">Assets</span>
-          <span class="count">₦{{data.assets.total.toLocaleString()}}</span>
+          <span class="count">{{data.assets.total | amount}}</span>
         </div>
-        <!-- <div class="divider"></div>
+        <div class="divider"></div>
         <div *ngFor="let item of assets" class="summary">
           <div class="title">
             {{item.assets}}
           </div>
           <div class="value">
-            {{item.value? item.value.toLocaleString(): '-'}}
+            {{item.value | amount}}
           </div>
-        </div> -->
-      </div>
-    </div>
-  </div>
-
-  <div class="col-12 col-sm-6 col-md-3">
-    <div class="box color-1">
-      <div class="ellips">
-        <i class="icon fa fa-database"></i>
-        <i class="fa fa-bars"></i>
-      </div>
-      <div class="content">
-        <div class="detail">
-          <span class="title">Liabilities</span>
-          <span class="count">₦{{'0'}}</span>
+        </div>
+        <div *ngFor="let item of data.assets.accounts.accounts" class="summary">
+          <div class="title">
+            {{item.name}}
+          </div>
+          <div class="value">
+            {{item.balance | amount}}
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="col-12 col-sm-6 col-md-3">
     <div class="box color-3">
       <div class="ellips">
         <i class="icon fa fa-database"></i>
@@ -115,36 +77,138 @@
       </div>
       <div class="content">
         <div class="detail">
-          <span class="title">Equities</span>
-          <span class="count">₦{{data.equity.total.toLocaleString()}}</span>
+          <span class="title">Liabilities</span>
+          <span class="count">{{data.liabilities.total | amount}}</span>
         </div>
-        <!-- <div class="divider"></div>
-        <div *ngFor="let item of equity" class="summary">
+        <div class="divider"></div>
+        <div *ngFor="let item of liabilities" class="summary">
           <div class="title">
-            {{item.equity}}
+            {{item.liabilities}}
           </div>
           <div class="value">
-            {{item.value? item.value.toLocaleString(): '-'}}
+            {{item.value | amount}}
           </div>
-        </div> -->
+        </div>
+        <div *ngFor="let item of data.liabilities.accounts.accounts" class="summary">
+          <div class="title">
+            {{item.name}}
+          </div>
+          <div class="value">
+            {{item.balance | amount}}
+          </div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="col-12 col-sm-6 col-md-3">
-    <div class="box color-2">
+    <div class="box color-3">
       <div class="ellips">
         <i class="icon fa fa-database"></i>
         <i class="fa fa-bars"></i>
       </div>
       <div class="content">
         <div class="detail">
-          <span class="title">Net Profit</span>
-          <span class="count">₦{{'0'}}</span>
+          <span class="title">Equity</span>
+          <span class="count">{{data.equity.total | amount}}</span>
+        </div>
+        <div class="divider"></div>
+        <div *ngFor="let item of equity" class="summary">
+          <div class="title">
+            {{item.equity}}
+          </div>
+          <div class="value">
+            {{item.value | amount}}
+          </div>
+        </div>
+        <div *ngFor="let item of data.equity.accounts.accounts" class="summary">
+          <div class="title">
+            {{item.name}}
+          </div>
+          <div class="value">
+            {{item.balance | amount}}
+          </div>
         </div>
       </div>
     </div>
+
   </div>
+
+  <div  class="col-12 col-md-6">
+
+    <div class="box color-3">
+      <div class="ellips">
+        <i class="icon fa fa-database"></i>
+        <i class="fa fa-bars"></i>
+      </div>
+      <div class="content">
+        <div class="detail">
+          <span class="title">Income</span>
+          <span class="count">{{data.income.total | amount}}</span>
+        </div>
+        <div class="divider"></div>
+        <div *ngFor="let item of income" class="summary">
+          <div class="title">
+            {{item.income}}
+          </div>
+          <div class="value">
+            {{item.value | amount}}
+          </div>
+        </div>
+        <div *ngFor="let item of data.income.accounts.accounts" class="summary">
+          <div class="title">
+            {{item.name}}
+          </div>
+          <div class="value">
+            {{item.balance | amount}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="box color-3">
+      <div class="ellips">
+        <i class="icon fa fa-database"></i>
+        <i class="fa fa-bars"></i>
+      </div>
+      <div class="content">
+        <div class="detail">
+          <span class="title">Expenses</span>
+          <span class="count">{{data.expenses.total | amount}}</span>
+        </div>
+        <div class="divider"></div>
+        <div *ngFor="let item of expenses" class="summary">
+          <div class="title">
+            {{item.expenses}}
+          </div>
+          <div class="value">
+            {{item.value | amount}}
+          </div>
+        </div>
+        <div *ngFor="let item of data.expenses.accounts.accounts" class="summary">
+          <div class="title">
+            {{item.name}}
+          </div>
+          <div class="value">
+            {{item.balance | amount}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="box color-3">
+      <div class="ellips">
+        <i class="icon fa fa-database"></i>
+        <i class="fa fa-bars"></i>
+      </div>
+      <div class="content">
+        <div class="detail">
+          <span class="title">{{data.profit_loss >= 0? 'Net profit' : 'Net loss'}}</span>
+          <span class="count">{{absolute(data.profit_loss)  | amount}}</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
 
 </div>
 <ng-template #showLoader>

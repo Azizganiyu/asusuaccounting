@@ -1,0 +1,148 @@
+<div class="container mt-4">
+  <div class="create">
+    <button (click)="depreciationCreateModal.show()">New Depreciation Entry</button>
+  </div>
+</div>
+
+<div class="list p-3 mt-5 mb-5" *ngIf="!loading; else elseLoading">
+  <table mdbTable small="true">
+    <thead>
+      <tr>
+        <th *ngFor="let head of headElements" scope="col">{{head}} </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr mdbTableCol *ngFor="let el of depreciations">
+        <td>{{el.date | date}}</td>
+        <td>{{el.asset.name}}</td>
+        <td>{{el.description}}</td>
+        <td>{{el.amount | amount}}</td>
+        <td>
+          <button (click)="edit(el)" class="edit">Edit</button>
+          <button (click)="view(el)" class="edit">View</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #elseLoading>
+  <app-loading></app-loading>
+</ng-template>
+
+<div [config]="{backdrop: false, ignoreBackdropClick: true}" style="overflow-y: auto" mdbModal #depreciationCreateModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mydepreciationCreateModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h5 class="modal-title w-100" id="myModalLabel">Create a new depreciation</h5>
+      </div>
+      <div class="modal-body">
+        <form  [formGroup]="depreciationForm" (ngSubmit)="create()">
+
+          <mat-form-field appearance="standard">
+            <mat-label>Date</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Description</mat-label>
+            <input matInput type="text" formControlName="description">
+          </mat-form-field>
+
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Fixed asset</mat-label>
+            <mat-select formControlName="account_id">
+                  <mat-option [value]="null">Select</mat-option>
+                  <mat-option *ngFor="let item of assets" [value]="item.id">{{item.name}}</mat-option>
+            </mat-select>
+            <div *ngIf="depreciationForm.controls.account_id.invalid && (depreciationForm.controls.account_id.dirty || depreciationForm.controls.account_id.touched)">
+              <mat-error *ngIf="depreciationForm.controls.account_id?.hasError('required')">Required</mat-error>
+            </div>
+          </mat-form-field>
+
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Amount</mat-label>
+            <input matInput type="number" formControlName="amount">
+            <div *ngIf="depreciationForm.controls.amount.invalid && (depreciationForm.controls.amount.dirty || depreciationForm.controls.amount.touched)">
+              <mat-error *ngIf="depreciationForm.controls.amount?.hasError('required')">Required</mat-error>
+            </div>
+          </mat-form-field>
+
+          <div class="mt-5">
+            <button [ngStyle]="{'background-color': submit? 'white':'#0087DD'}" [disabled]="!depreciationForm.valid" class="submit" type="submit" mat-button>
+              <span *ngIf="!submit" class="text-light">Create</span>
+              <div *ngIf="submit" class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </button>
+          </div>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div [config]="{backdrop: false, ignoreBackdropClick: true}" style="overflow-y: auto" mdbModal #depreciationEditModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mydepreciationEditModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h5 class="modal-title w-100" id="myModalLabel">Edit trasnfer</h5>
+      </div>
+      <div class="modal-body">
+        <form  [formGroup]="depreciationForm" (ngSubmit)="update()">
+
+          <mat-form-field appearance="standard">
+            <mat-label>Date</mat-label>
+            <input matInput [matDatepicker]="picker2" formControlName="date">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Description</mat-label>
+            <input matInput type="text" formControlName="description">
+          </mat-form-field>
+
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Fixed asset</mat-label>
+            <mat-select formControlName="account_id">
+                  <mat-option [value]="null">Select</mat-option>
+                  <mat-option *ngFor="let item of assets" [value]="item.id">{{item.name}}</mat-option>
+            </mat-select>
+            <div *ngIf="depreciationForm.controls.account_id.invalid && (depreciationForm.controls.account_id.dirty || depreciationForm.controls.account_id.touched)">
+              <mat-error *ngIf="depreciationForm.controls.account_id?.hasError('required')">Required</mat-error>
+            </div>
+          </mat-form-field>
+
+          <mat-form-field appearance="standard" class="form">
+            <mat-label>Amount</mat-label>
+            <input matInput type="number" formControlName="amount">
+            <div *ngIf="depreciationForm.controls.amount.invalid && (depreciationForm.controls.amount.dirty || depreciationForm.controls.amount.touched)">
+              <mat-error *ngIf="depreciationForm.controls.amount?.hasError('required')">Required</mat-error>
+            </div>
+          </mat-form-field>
+
+          <div class="mt-5">
+            <button [ngStyle]="{'background-color': submit? 'white':'#0087DD'}" [disabled]="!depreciationForm.valid" class="submit" type="submit" mat-button>
+              <span *ngIf="!submit" class="text-light">Update</span>
+              <div *ngIf="submit" class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </button>
+            <button (click)="confirmDelete()" class="submit ml-3 btn-danger" type="button" mat-button>
+              Delete
+            </button>
+          </div>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>

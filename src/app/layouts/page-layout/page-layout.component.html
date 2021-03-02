@@ -18,16 +18,16 @@
           <mdb-icon fas icon="cash-register"></mdb-icon><a [routerLink]="['/cash-accounts']" routerLinkActive="router-link-active" >Cash Accounts</a>
         </div>
         <div class="link">
-          <mdb-icon fas icon="exchange-alt"></mdb-icon><a [routerLink]="['/inter-account-transfers']" routerLinkActive="router-link-active" >Inter Account Transfers</a>
-        </div>
-        <div class="link">
-          <mdb-icon fas icon="check"></mdb-icon><a [routerLink]="['/bank-reconcilation']" routerLinkActive="router-link-active" >Bank Reconcilations</a>
-        </div>
-        <div class="link">
           <mdb-icon fas icon="receipt"></mdb-icon><a [routerLink]="['/receipts']" routerLinkActive="router-link-active" >Receipts</a>
         </div>
         <div class="link">
           <mdb-icon far icon="credit-card"></mdb-icon><a [routerLink]="['/payments']" routerLinkActive="router-link-active" >Payments</a>
+        </div>
+        <div class="link">
+          <mdb-icon fas icon="exchange-alt"></mdb-icon><a [routerLink]="['/inter-account-transfers']" routerLinkActive="router-link-active" >Inter Account Transfers</a>
+        </div>
+        <div class="link">
+          <mdb-icon fas icon="check"></mdb-icon><a [routerLink]="['/bank-reconcilation']" routerLinkActive="router-link-active" >Bank Reconcilations</a>
         </div>
         <div class="link">
           <mdb-icon fas icon="warehouse"></mdb-icon><a [routerLink]="['/inventory-items']" routerLinkActive="router-link-active" >Inventory Items</a>
@@ -43,6 +43,21 @@
         </div>
         <div class="link">
           <mdb-icon fas icon="file-invoice-dollar"></mdb-icon><a [routerLink]="['/purchase-invoice']" routerLinkActive="router-link-active" >Purchase Invoice</a>
+        </div>
+        <div class="link">
+          <mdb-icon fas icon="bus-alt"></mdb-icon><a [routerLink]="['/fixed-asset']" routerLinkActive="router-link-active" >Fixed Asset</a>
+        </div>
+        <div class="link">
+          <mdb-icon fas icon="battery-quarter"></mdb-icon><a [routerLink]="['/fixed-asset-depreciation']" routerLinkActive="router-link-active" >Depreciation Entries</a>
+        </div>
+        <div class="link">
+          <mdb-icon fas icon="copyright"></mdb-icon><a [routerLink]="['/intangible-asset']" routerLinkActive="router-link-active" >Intangible Asset</a>
+        </div>
+        <div class="link">
+          <mdb-icon fas icon="sort-amount-down"></mdb-icon><a [routerLink]="['/intangible-asset-amortization']" routerLinkActive="router-link-active" >Amortization Entries</a>
+        </div>
+        <div class="link">
+          <mdb-icon fas icon="user-tie"></mdb-icon><a [routerLink]="['/capital-account']" routerLinkActive="router-link-active" >Capital Account</a>
         </div>
         <div class="link">
           <mdb-icon fas icon="book-open"></mdb-icon><a [routerLink]="['/journal']" routerLinkActive="router-link-active" >Journal</a>
@@ -81,7 +96,9 @@
         </div>
       </div>
     </mat-toolbar>
-    <router-outlet></router-outlet>
+    <div class="container">
+      <router-outlet></router-outlet>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
 

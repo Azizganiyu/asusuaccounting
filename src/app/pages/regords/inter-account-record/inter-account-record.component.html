@@ -31,8 +31,8 @@
     <tbody>
       <tr mdbTableCol *ngFor="let el of data.entry">
         <td>{{el.column1}}</td>
-        <td>{{el.column2}}</td>
-        <td>{{el.column3}}</td>
+        <td>{{el.column2 | amount}}</td>
+        <td>{{el.column3 | amount}}</td>
       </tr>
     </tbody>
   </table>

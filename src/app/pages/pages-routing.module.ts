@@ -21,7 +21,19 @@ import { SaleInvoiceRecordComponent } from './regords/sale-invoice-record/sale-i
 import { SaleInvoiceComponent } from './sale-invoice/sale-invoice.component';
 import { ReceiptsComponent } from './receipts/receipts.component';
 import { ReceiptRecordComponent } from './regords/receipt-record/receipt-record.component';
+import { JournalEntryRecordComponent } from './regords/journal-entry-record/journal-entry-record.component';
 import { JournalRecordComponent } from './journal-record/journal-record.component';
+import { CapitalAccountComponent } from './capital-account/capital-account.component';
+import { FixedAssetComponent } from './fixed-asset/fixed-asset.component';
+import { FixedAssetDepreciationComponent } from './fixed-asset-depreciation/fixed-asset-depreciation.component';
+import { IntangibleAssetComponent } from './intangible-asset/intangible-asset.component';
+import { IntangibleAssetAmortizationComponent } from './intangible-asset-amortization/intangible-asset-amortization.component';
+import { DepreciationRecordComponent } from './regords/depreciation-record/depreciation-record.component';
+import { AmortizationRecordComponent } from './regords/amortization-record/amortization-record.component';
+import { ReportsComponent } from './reports/reports.component';
+import { BalanceSheetComponent } from './reports/balance-sheet/balance-sheet.component';
+import { IncomeExpenditureComponent } from './reports/income-expenditure/income-expenditure.component';
+import { LedgerComponent } from './reports/ledger/ledger.component';
 
 
 
@@ -83,6 +95,18 @@ const routes: Routes = [
     component: ReceiptRecordComponent,
   },
   {
+    path: 'journal-record',
+    component: JournalEntryRecordComponent,
+  },
+  {
+    path: 'depreciation-record',
+    component: DepreciationRecordComponent,
+  },
+  {
+    path: 'amortization-record',
+    component: AmortizationRecordComponent,
+  },
+  {
     path: 'inventory-items',
     component: InventoryItemsComponent,
   },
@@ -113,6 +137,42 @@ const routes: Routes = [
   {
     path: 'journal',
     component: JournalRecordComponent,
+  },
+  {
+    path: 'capital-account',
+    component: CapitalAccountComponent,
+  },
+  {
+    path: 'fixed-asset',
+    component: FixedAssetComponent,
+  },
+  {
+    path: 'fixed-asset-depreciation',
+    component: FixedAssetDepreciationComponent,
+  },
+  {
+    path: 'intangible-asset',
+    component: IntangibleAssetComponent,
+  },
+  {
+    path: 'intangible-asset-amortization',
+    component: IntangibleAssetAmortizationComponent,
+  },
+  {
+    path: 'reports',
+    component: ReportsComponent,
+  },
+  {
+    path: 'balance-sheet',
+    component: BalanceSheetComponent,
+  },
+  {
+    path: 'income-expenditure',
+    component: IncomeExpenditureComponent,
+  },
+  {
+    path: 'ledger',
+    component: LedgerComponent,
   },
 ];
 

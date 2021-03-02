@@ -14,7 +14,7 @@
 <div class="conainer" *ngIf="!loading; else elseLoading">
   <mat-tab-group>
     <mat-tab *ngFor="let type of types" [label]="type.name">
-      <app-account-charts [id]="type.id"></app-account-charts>
+      <app-account-charts [id]="type.id" [code]="type.code"></app-account-charts>
     </mat-tab>
   </mat-tab-group>
 </div>

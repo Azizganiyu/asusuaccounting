@@ -8,25 +8,10 @@
   border-radius: 10px;
   min-height: 150px;
   margin-bottom: 20px;
-  color: white;
+  color: rgb(60, 60, 60);
   cursor: pointer;
-}
-
-.box:hover{
-  opacity: .5;
-}
-
-.box.color-1{
-  background-color: #63c2de;
-}
-.box.color-2{
-  background-color: #20a8d8;
-}
-.box.color-3{
-  background-color: #ffc107;
-}
-.box.color-4{
-  background-color: #f86c6b;
+  background-color: #fff;
+  box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
 }
 
 
@@ -41,16 +26,17 @@
 .box .content .detail .title{
   line-height: 35px;
   font-size: 0.9em;
-  text-transform: uppercase;
+  font-weight: bold;
 }
 .box .content .detail .count{
   font-size: 1.5em;
+  font-weight: bold;
 }
 
 .box .divider{
   margin: 30px 0;
   height: 2px;
-  background-color: #fff;
+  background-color: rgb(100, 100, 100);
 }
 
 .box .summary{
@@ -58,6 +44,11 @@
   display: flex;
   justify-content: space-between;
   font-size: 0.8em;
+  background-color: #fff;
+  .value{
+    color: #20a8d8;
+    font-weight: bold;
+  }
 }
 
 

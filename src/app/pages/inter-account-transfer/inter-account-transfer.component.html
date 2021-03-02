@@ -17,7 +17,7 @@
         <td>{{el.paid_from.name}}</td>
         <td>{{el.received_in.name}}</td>
         <td>{{el.description}}</td>
-        <td>{{el.amount.toLocaleString()}}</td>
+        <td>{{el.amount | amount}}</td>
         <td>
           <button (click)="edit(el)" class="edit">Edit</button>
           <button (click)="view(el)" class="edit">View</button>
