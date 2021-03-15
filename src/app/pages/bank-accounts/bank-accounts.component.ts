@@ -41,6 +41,7 @@ export class BankAccountsComponent implements OnInit {
     this.loading = true
     this.bankService.getAccounts().subscribe((data: any) => {
       this.accounts = data.data
+      console.log(this.accounts)
       this.loading = false
     }, (error => {
       console.log(error)

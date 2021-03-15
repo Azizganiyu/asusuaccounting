@@ -21,9 +21,15 @@
       <mdb-icon fas icon="sitemap" class="mr-1"></mdb-icon>
       <span>Chart of Accounts</span>
     </a>
+
     <a [routerLink]="['start-date']" routerLinkActive="router-link-active"  class="item">
       <mdb-icon fas icon="clock" class="mr-1"></mdb-icon>
       <span>Start Date</span>
+    </a>
+
+    <a [routerLink]="['primary-account']" routerLinkActive="router-link-active"  class="item">
+      <mdb-icon fas icon="star" class="mr-1"></mdb-icon>
+      <span>Set Primary Account</span>
     </a>
 
     <a href="javascript:void()" (click)="confirmDelete()" routerLinkActive="router-link-active"  class="item">

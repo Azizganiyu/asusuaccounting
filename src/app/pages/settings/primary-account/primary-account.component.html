@@ -1,0 +1,48 @@
+<div class="dark-font bc-icons-2 breadcrumb">
+
+  <mdb-breadcrumb customClass="black-text grey lighten-5">
+    <mdb-breadcrumb-item>
+      <mdb-icon fas icon="angle-right" class="mr-1"></mdb-icon> <a [routerLink]="['/settings']">Settings</a>
+    </mdb-breadcrumb-item>
+    <mdb-breadcrumb-item class="active">
+      <mdb-icon fas icon="angle-right" class="mr-1"></mdb-icon> Primary Account
+    </mdb-breadcrumb-item>
+  </mdb-breadcrumb>
+
+</div>
+
+<div *ngIf="!loading; else elseLoading" class="container">
+  <mat-card class="new-user-card">
+    <mat-card-content class="new-user-card-content">
+        <div>
+
+          <form  [formGroup]="primaryAccountForm" (ngSubmit)="onSubmit()">
+
+              <mat-form-field appearance="standard" class="form">
+                <mat-label>Account</mat-label>
+                <mat-select formControlName="account">
+                      <mat-option [value]="null">Select</mat-option>
+                      <mat-option *ngFor="let item of accounts" [value]="item">{{item.name}}</mat-option>
+                </mat-select>
+                <div *ngIf="primaryAccountForm.controls.account.invalid && (primaryAccountForm.controls.account.dirty || primaryAccountForm.controls.account.touched)">
+                  <mat-error *ngIf="primaryAccountForm.controls.account?.hasError('required')">Required</mat-error>
+                </div>
+              </mat-form-field>
+
+              <div class="mt-5">
+                <button [ngStyle]="{'background-color': submit? 'white':'#0087DD'}" [disabled]="!primaryAccountForm.valid" class="submit" type="submit" mat-button>
+                  <span *ngIf="!submit" class="text-light">Set</span>
+                  <div *ngIf="submit" class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </button>
+              </div>
+          </form>
+        </div>
+      </mat-card-content>
+  </mat-card>
+</div>
+
+<ng-template #elseLoading>
+  <app-loading></app-loading>
+</ng-template>

@@ -13,7 +13,7 @@
     </thead>
     <tbody>
       <tr mdbTableCol *ngFor="let el of accounts">
-        <td>{{el.name}}</td>
+        <td> <mdb-icon *ngIf="el.primary_account" class="mr-1" fas icon="star"></mdb-icon> {{el.name}}</td>
         <td>{{el.balance | amount}}</td>
         <td>
           <button (click)="edit(el)" class="edit">Edit</button>

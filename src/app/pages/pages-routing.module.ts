@@ -34,6 +34,8 @@ import { ReportsComponent } from './reports/reports.component';
 import { BalanceSheetComponent } from './reports/balance-sheet/balance-sheet.component';
 import { IncomeExpenditureComponent } from './reports/income-expenditure/income-expenditure.component';
 import { LedgerComponent } from './reports/ledger/ledger.component';
+import { PrimaryAccountComponent } from './settings/primary-account/primary-account.component';
+import { BankReconcilationComponent } from './bank-reconcilation/bank-reconcilation.component';
 
 
 
@@ -53,6 +55,10 @@ const routes: Routes = [
   {
     path: 'settings/start-date',
     component: StartDateComponent,
+  },
+  {
+    path: 'settings/primary-account',
+    component: PrimaryAccountComponent,
   },
   {
     path: 'settings/business-logo',
@@ -173,6 +179,10 @@ const routes: Routes = [
   {
     path: 'ledger',
     component: LedgerComponent,
+  },
+  {
+    path: 'bank-reconcilation',
+    component: BankReconcilationComponent,
   },
 ];
 
