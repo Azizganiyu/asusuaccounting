@@ -110,6 +110,10 @@ export class DashboardComponent implements OnInit {
         equity: 'Capital accounts',
         value: this.data.equity.capital_account.balance
       },
+      {
+        equity: 'Member investments',
+        value: this.data.equity.member_investments
+      },
     ]
   }
 
