@@ -65,6 +65,14 @@ export class IncomeExpenditureComponent implements OnInit {
         value: this.data.assets.account_receivable.balance
       },
       {
+        assets: 'Loan receivable',
+        value: this.data.assets.loan_receivable
+      },
+      {
+        assets: 'Loan interest receivable',
+        value: this.data.assets.loan_interest_receivable
+      },
+      {
         assets: 'Inventory on hand',
         value: this.data.assets.inventory_on_hand.balance
       },
@@ -94,8 +102,12 @@ export class IncomeExpenditureComponent implements OnInit {
         value: this.data.equity.retained_earnings
       },
       {
-        equity: 'Capital Accounts',
+        equity: 'Capital accounts',
         value: this.data.equity.capital_account.balance
+      },
+      {
+        equity: 'Member investments',
+        value: this.data.equity.member_investments
       },
     ]
   }
@@ -103,8 +115,12 @@ export class IncomeExpenditureComponent implements OnInit {
   setLiabilities(){
     this.liabilities = [
       {
-        liabilities: 'Account Payable',
+        liabilities: 'Account payable',
         value: this.data.liabilities.account_payable.balance
+      },
+      {
+        liabilities: 'Member contributions',
+        value: this.data.liabilities.member_contributions
       },
     ]
   }
@@ -131,6 +147,10 @@ export class IncomeExpenditureComponent implements OnInit {
       {
         income: 'Inventory - sales',
         value: this.data.income.inventory_sales.total
+      },
+      {
+        income: 'Interest - loans',
+        value: this.data.income.interest_from_loans
       },
     ]
   }

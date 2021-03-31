@@ -57,7 +57,7 @@
               {{item.assets}}
             </h6>
             <h6 class="value">
-              {{item.value.toLocaleString()}}
+              {{eval(item.value)}}
             </h6>
           </div>
           <div *ngFor="let item of data.assets.accounts.accounts" class="record">
