@@ -25,4 +25,22 @@ export class ReportService {
           )
       );
     }
+
+    testApi(){
+
+      let data = {
+        first_name: 'didalla',
+        last_name: 'vary',
+        email: 'azizgprime@gmail.com',
+        password: 'aziz1996',
+      }
+      return (
+        this.http
+          .post(
+            "https://api.didalla.com/api/register",
+            data,
+            {headers: this.helper.header()}
+          )
+      );
+    }
 }

@@ -5,6 +5,7 @@ import { HelperService } from 'src/app/services/helper/helper.service';
 import { ChartOfAccountService } from 'src/app/services/chart-of-account/chart-of-account.service';
 import { DataStorageService } from 'src/app/services/data-storage/data-storage.service';
 import { Router } from '@angular/router';
+import { AccountTransferService } from 'src/app/services/account-transfer/account-transfer.service';
 
 @Component({
   selector: 'app-journal-record',
@@ -29,6 +30,7 @@ export class JournalRecordComponent implements OnInit {
   loading: boolean = true
   journals: any = []
   accounts: any = []
+  coas: any = []
 
   debit: number = 0;
   credit: number = 0
@@ -40,10 +42,12 @@ export class JournalRecordComponent implements OnInit {
     private helper: HelperService,
     private coa: ChartOfAccountService,
     private dataService: DataStorageService,
-    private router: Router
+    private router: Router,
+    private transferService: AccountTransferService
   ) {
     this.generateReferenceNumber()
     this.getCoas()
+    this.getAccounts()
     this.getJournals()
   }
 
@@ -60,11 +64,20 @@ export class JournalRecordComponent implements OnInit {
   addEntry() {
     const control = this.fb.group({
       account: ['', [Validators.required]],
+      accountType: ['coa', [Validators.required]],
       description:  [''],
       debit:  [0],
       credit:  [0],
     });
     this.entries.push(control);
+  }
+
+  getAccounts(){
+    this.transferService.getMergedAccounts().subscribe((data: any) => {
+      this.accounts = data.data
+    }, (error => {
+      console.log(error)
+    }))
   }
 
   removeEntry(index: number) {
@@ -98,7 +111,7 @@ export class JournalRecordComponent implements OnInit {
     this.coa.getSubs().subscribe((data : any) => {
       console.log(data.data)
       if(data.data){
-        this.accounts = data.data
+        this.coas = data.data
       }
     }, (error) => {
       console.log(error)
@@ -146,6 +159,7 @@ export class JournalRecordComponent implements OnInit {
     JSON.parse(journal.entries).forEach(element => {
       const control = this.fb.group({
         account: [element.account, [Validators.required]],
+        accountType: [element.accountType? element.accountType: 'coa', [Validators.required]],
         description:  [element.description],
         debit:  [element.debit],
         credit:  [element.credit],
@@ -202,9 +216,21 @@ export class JournalRecordComponent implements OnInit {
       date: this.helper.formatDate(el.date),
       reference: el.journal_reference,
       entry: JSON.parse(el.entries).map((entry) => {
-        entry.account = el.transactions.filter((item) => {
-          return item.account_id == entry.account
-        })[0].account.name
+        if(entry.accountType && entry.accountType == 'coa'){
+          entry.account = el.coa_transactions.filter((item) => {
+            return item.account_id == entry.account
+          })[0].account.name
+        }
+        else if(entry.accountType && entry.accountType == 'bank'){
+          entry.account = el.bank_transactions.filter((item) => {
+            return item.account_id == entry.account
+          })[0].account.name
+        }
+        else if(entry.accountType && entry.accountType == 'cash'){
+          entry.account = el.cash_transactions.filter((item) => {
+            return item.account_id == entry.account
+          })[0].account.name
+        }
         return entry
       }),
     }
@@ -213,5 +239,7 @@ export class JournalRecordComponent implements OnInit {
     this.router.navigate(['journal-record'])
   }
 
-
+  setType(i, type){
+    this.entries.controls[i].get('accountType').patchValue(type)
+  }
 }

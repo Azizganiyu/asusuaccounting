@@ -75,8 +75,13 @@
                   <mat-label>Account</mat-label>
                   <mat-select formControlName="account">
                         <mat-option [value]="null">Select</mat-option>
-                        <mat-optgroup *ngFor="let group of accounts" [label]="group.name">
-                        <mat-option *ngFor="let item of group.chart_of_accounts" [value]="item.id">
+                        <mat-optgroup *ngFor="let group of coas" [label]="group.name">
+                        <ng-container *ngIf="group.name == 'assets'">
+                          <mat-option (click)="setType(i, item.type)" *ngFor="let item of accounts" [value]="item.id">
+                            {{item.name}}
+                          </mat-option>
+                        </ng-container>
+                        <mat-option (click)="setType(i, 'coa')" *ngFor="let item of group.chart_of_accounts" [value]="item.id">
                           {{item.name}}
                         </mat-option>
                       </mat-optgroup>
@@ -176,11 +181,16 @@
                   <mat-label>Account</mat-label>
                   <mat-select formControlName="account">
                         <mat-option [value]="null">Select</mat-option>
-                        <mat-optgroup *ngFor="let group of accounts" [label]="group.name">
-                        <mat-option *ngFor="let item of group.chart_of_accounts" [value]="item.id">
-                          {{item.name}}
-                        </mat-option>
-                      </mat-optgroup>
+                        <mat-optgroup *ngFor="let group of coas" [label]="group.name">
+                          <ng-container *ngIf="group.name == 'assets'">
+                            <mat-option (click)="setType(i, item.type)" *ngFor="let item of accounts" [value]="item.id">
+                              {{item.name}}
+                            </mat-option>
+                          </ng-container>
+                          <mat-option (click)="setType(i, 'coa')" *ngFor="let item of group.chart_of_accounts" [value]="item.id">
+                            {{item.name}}
+                          </mat-option>
+                        </mat-optgroup>
                   </mat-select>
                   <div *ngIf="entries.controls[i].get('account').invalid && (entries.controls[i].get('account').dirty || entries.controls[i].get('account').touched)">
                     <mat-error *ngIf="entries.controls[i].get('account')?.hasError('required')">Required</mat-error>

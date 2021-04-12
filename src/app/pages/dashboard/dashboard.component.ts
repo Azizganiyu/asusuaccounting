@@ -35,6 +35,7 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //this.testApi()
   }
 
   generateData(){
@@ -162,5 +163,13 @@ export class DashboardComponent implements OnInit {
 
   absolute(value){
     return Math.abs(value)
+  }
+
+  testApi(){
+    this.report.testApi().subscribe((data : any) => {
+      console.log('Test', data)
+    }, ((error) => {
+      console.log(error)
+    }))
   }
 }
