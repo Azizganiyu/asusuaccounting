@@ -66,8 +66,8 @@ export class JournalRecordComponent implements OnInit {
       account: ['', [Validators.required]],
       accountType: ['coa', [Validators.required]],
       description:  [''],
-      debit:  [0],
-      credit:  [0],
+      debit:  [0, [Validators.required]],
+      credit:  [0, [Validators.required]],
     });
     this.entries.push(control);
   }

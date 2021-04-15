@@ -13,12 +13,14 @@ import { PageLayoutComponent } from './layouts/page-layout/page-layout.component
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared.module';
 import { NoAccountComponent } from './components/no-account/no-account.component';
+import { ContactAdminComponent } from './components/contact-admin/contact-admin.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PageLayoutComponent,
     NoAccountComponent,
+    ContactAdminComponent,
   ],
   imports: [
     BrowserModule,

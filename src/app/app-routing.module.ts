@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { ContactAdminComponent } from './components/contact-admin/contact-admin.component';
 import { NoAccountComponent } from './components/no-account/no-account.component';
 import { AccountGuard } from './guards/account/account.guard';
 import { AuthGuard } from './guards/auth.guard';
@@ -15,6 +16,10 @@ const routes: Routes = [
   {
     path: 'no-account',
     component: NoAccountComponent,
+  },
+  {
+    path: 'contact-admin',
+    component: ContactAdminComponent,
   },
   {
     path: 'auth',

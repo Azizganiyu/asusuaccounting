@@ -18,12 +18,21 @@ export class AccountGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> {
-      return this.accountService.hasAccount().pipe(map((response: { hasAccount: boolean}) => {
+      return this.accountService.hasAccount().pipe(map((response: { hasAccount: boolean, status: boolean}) => {
         if (response.hasAccount) {
+
+          if(response.status){
             return true;
+          }
+          else{
+            this.router.navigate(['/contact-admin']);
+            return false
+          }
         }
-        this.router.navigate(['/no-account']);
-        return false;
+        else{
+          this.router.navigate(['/no-account']);
+          return false;
+        }
     }), catchError((error) => {
         this.router.navigate(['/no-account']);
         return of(false);
