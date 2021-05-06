@@ -45,26 +45,30 @@ form{
 
 .entry{
   display: flex;
-  width: 600px;
+  width: 90%;
+  flex-wrap: wrap;
   position: relative;
 
   .account{
-    width: 30%;
+    width: 50%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
   }
 
   .description{
-    width: 40%;
+    width: 30%;
   }
 
   .debit, .credit{
-    width: 15%;
+    width: 10%;
   }
 }
 
 .total{
   position: relative;
   display: flex;
-  width: 600px;
+  width: 90%;
   justify-content: flex-end;
   .credit, .debit{
     width: 15%;

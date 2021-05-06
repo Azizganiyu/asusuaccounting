@@ -55,4 +55,24 @@ export class JournalService {
         )
     );
   }
+
+  getMemberLoanAccounts(id){
+    return (
+      this.http
+        .get(
+          this.helper.getApiUrl() + "aas/journal/member_loans/"+id,
+          {headers: this.helper.header()}
+        )
+    );
+  }
+
+  getMemberSavingAccounts(id){
+    return (
+      this.http
+        .get(
+          this.helper.getApiUrl() + "aas/journal/member_savings/"+id,
+          {headers: this.helper.header()}
+        )
+    );
+  }
 }

@@ -71,25 +71,82 @@
             <div *ngFor="let _ of entries.controls; index as i">
               <div class="entry" [formGroupName]="i">
 
-                <mat-form-field appearance="standard" class="form account">
-                  <mat-label>Account</mat-label>
-                  <mat-select formControlName="account">
-                        <mat-option [value]="null">Select</mat-option>
-                        <mat-optgroup *ngFor="let group of coas" [label]="group.name">
-                        <ng-container *ngIf="group.name == 'assets'">
-                          <mat-option (click)="setType(i, item.type)" *ngFor="let item of accounts" [value]="item.id">
+                <div class="account">
+                  <mat-form-field appearance="standard" class="form">
+                    <mat-label>Account</mat-label>
+                    <mat-select formControlName="account">
+                          <mat-option [value]="null">Select</mat-option>
+                          <mat-optgroup *ngFor="let group of coas" [label]="group.name">
+                          <ng-container *ngIf="group.name == 'assets'">
+                            <mat-option (click)="setType(i, item.type)" *ngFor="let item of accounts" [value]="item.id">
+                              {{item.name}}
+                            </mat-option>
+                            <mat-option (click)="setType(i, 'loans')" [value]="'loans'">
+                              Loans
+                            </mat-option>
+                          </ng-container>
+                          <ng-container *ngIf="group.name == 'liabilities'">
+                            <mat-option (click)="setType(i, 'savings')" [value]="'savings'">
+                              Savings
+                            </mat-option>
+                          </ng-container>
+                          <mat-option (click)="setType(i, 'coa')" *ngFor="let item of group.chart_of_accounts" [value]="item.id">
                             {{item.name}}
                           </mat-option>
-                        </ng-container>
-                        <mat-option (click)="setType(i, 'coa')" *ngFor="let item of group.chart_of_accounts" [value]="item.id">
-                          {{item.name}}
+                        </mat-optgroup>
+                    </mat-select>
+                    <div *ngIf="entries.controls[i].get('account').invalid && (entries.controls[i].get('account').dirty || entries.controls[i].get('account').touched)">
+                      <mat-error *ngIf="entries.controls[i].get('account')?.hasError('required')">Required</mat-error>
+                    </div>
+                  </mat-form-field>
+
+                  <mat-form-field *ngIf="entries.controls[i].get('accountType').value == 'loans' || entries.controls[i].get('accountType').value == 'savings'" appearance="standard" class="form account">
+                    <mat-label>Member</mat-label>
+                      <input (blur)="validateValue(i)" matInput type="text" placeholder="Search..." [matAutocomplete]="auto" formControlName="member">
+                      <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption [displayWith]="displayFn">
+                        <mat-option *ngFor="let member of filteredOptions[i]" [value]="member">
+                          {{ member?.first_name }}
+                          {{ member?.last_name }}
+                          {{ member?.middle_name }}
                         </mat-option>
-                      </mat-optgroup>
-                  </mat-select>
-                  <div *ngIf="entries.controls[i].get('account').invalid && (entries.controls[i].get('account').dirty || entries.controls[i].get('account').touched)">
-                    <mat-error *ngIf="entries.controls[i].get('account')?.hasError('required')">Required</mat-error>
+                      </mat-autocomplete>
+                    <div *ngIf="entries.controls[i].get('member').invalid && (entries.controls[i].get('member').dirty || entries.controls[i].get('member').touched)">
+                      <mat-error *ngIf="entries.controls[i].get('member')?.hasError('required')">Required</mat-error>
+                    </div>
+                  </mat-form-field>
+
+                  <div *ngIf="!loadingMemberAccount[i]; else showSpinner">
+                    <mat-form-field *ngIf="entries.controls[i].get('accountType').value == 'loans' && showMemberLoans[i]" appearance="standard" class="form">
+                      <mat-label>Loan Account</mat-label>
+                      <mat-select formControlName="loan_id">
+                            <mat-option [value]="null">Select</mat-option>
+                            <mat-option *ngFor="let item of loanData[i]" [value]="item.id">
+                              {{item.type.loan_type}}
+                            </mat-option>
+                      </mat-select>
+                      <div *ngIf="entries.controls[i].get('loan_id').invalid && (entries.controls[i].get('loan_id').dirty || entries.controls[i].get('loan_id').touched)">
+                        <mat-error *ngIf="entries.controls[i].get('loan_id')?.hasError('required')">Required</mat-error>
+                      </div>
+                    </mat-form-field>
+                    <mat-form-field *ngIf="entries.controls[i].get('accountType').value == 'savings' && showMemberSavings[i]" appearance="standard" class="form">
+                      <mat-label>Savings Account</mat-label>
+                      <mat-select formControlName="contributionplan_id">
+                            <mat-option [value]="null">Select</mat-option>
+                            <mat-option *ngFor="let item of savingData[i]" [value]="item.id">
+                              {{item.contribution_plan.name}}
+                            </mat-option>
+                      </mat-select>
+                      <div *ngIf="entries.controls[i].get('contributionplan_id').invalid && (entries.controls[i].get('contributionplan_id').dirty || entries.controls[i].get('contributionplan_id').touched)">
+                        <mat-error *ngIf="entries.controls[i].get('contributionplan_id')?.hasError('required')">Required</mat-error>
+                      </div>
+                    </mat-form-field>
                   </div>
-                </mat-form-field>
+
+                  <ng-template #showSpinner>
+                    <br/> <div class="spinner-border" role="status"></div>
+                  </ng-template>
+
+                </div>
 
                 <mat-form-field appearance="standard" class="form description">
                   <mat-label>Description</mat-label>
