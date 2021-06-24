@@ -98,9 +98,47 @@ export class JournalRecordComponent implements OnInit {
 
   ngOnInit(): void {
     this.journalForm.get('entries').valueChanges.subscribe((val) => {
-      console.log(val)
+      this.check(val)
       this.getTotal(val)
     })
+  }
+
+  check(val){
+    console.log(val)
+    let banks = []
+    let accounts = []
+    val.forEach((element, i) => {
+      if(element.accountType == 'bank' || element.accountType == 'cash'){
+        banks.push(i)
+      }
+    });
+   if(banks.length > 0){
+    val.forEach((element, i) => {
+      if(element.accountType == 'loans' || element.accountType == 'savings'){
+        accounts.push(i)
+      }
+    });
+   }
+
+   if(accounts.length > 0){
+    let dialogRef = this.helper.confirm('Invalid transactions!', 'Loans or savings transactions can not be executed along side a bank transaction. Do you want remove these transactions?');
+
+    dialogRef.afterClosed().subscribe(result => {
+
+      if(result){
+        accounts.forEach(element => {
+          accounts.pop()
+          this.removeEntry(element)
+        })
+      }
+      else{
+        banks.forEach(element => {
+          banks.pop()
+          this.removeEntry(element)
+        })
+      }
+    });
+   }
   }
 
   getTotal(val){
@@ -152,15 +190,15 @@ export class JournalRecordComponent implements OnInit {
   create(){
     console.log('submitted')
     console.log(this.journalForm.getRawValue())
-    //this.submit = true
+    this.submit = true
     console.log(this.journalForm.value)
-    // this.journalService.create(this.journalForm.getRawValue()).subscribe((data: any) => {
-    //   this.getJournals()
-    //   this.helper.showSuccess(data.message, 'Success!')
-    //   this.hideModal()
-    // }, (error => {
-    //   console.log(error)
-    // }))
+    this.journalService.create(this.journalForm.getRawValue()).subscribe((data: any) => {
+      this.getJournals()
+      this.helper.showSuccess(data.message, 'Success!')
+      this.hideModal()
+    }, (error => {
+      console.log(error)
+    }))
   }
 
   edit(journal){
