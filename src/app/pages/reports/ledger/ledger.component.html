@@ -1,1 +1,234 @@
-<p>ledger works!</p>
+<div class="container mt-5 mb-5">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <mat-card class="new-user-card">
+        <mat-card-header>
+          <mat-card-title>
+            TRIAL BALANCE
+          </mat-card-title>
+          <mat-card-subtitle>
+            Select date to generate report
+          </mat-card-subtitle>
+        </mat-card-header>
+        <form  [formGroup]="durationForm">
+
+         <div class="form">
+          <mat-form-field appearance="fill">
+            <mat-label>Choose a date</mat-label>
+            <input matInput [matDatepicker]="pickerTo" formControlName="to">
+            <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
+            <mat-datepicker #pickerTo></mat-datepicker>
+          </mat-form-field>
+         </div>
+        </form>
+
+        <mat-card-content class="new-user-card-content">
+          <div class="text-center">
+            <button (click)="generateData()" [ngStyle]="{'background-color': submit? 'white':'#0087DD'}" class="submit" mat-button>
+              <span *ngIf="!submit" class="text-light">Generate</span>
+              <mat-progress-bar *ngIf="submit" mode="indeterminate"></mat-progress-bar>
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <div  class="row mt-5">
+    <div class="col-12 report" *ngIf="showResult; else generate">
+      <mat-card class="new-user-card">
+        <mat-card-header>
+          <mat-card-title>
+            Report
+          </mat-card-title>
+          <mat-card-subtitle>
+            <strong>As at</strong> {{getDurationDate(data.to)}}
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content class="new-user-card-content">
+
+          <div class="record">
+            <h6 class="title"></h6>
+            <h6 class="value">Debit</h6>
+            <h6 class="value">Credit</h6>
+          </div>
+
+
+          <div class="divider"></div>
+          <h6 class="header">Income</h6>
+          <div *ngFor="let item of income" class="record">
+            <h6 class="title">
+              {{item.income}}
+            </h6>
+            <h6 class="value">
+              <span *ngIf="item.value < 0; else showDash">{{eval(item.value)}}</span>
+            </h6>
+            <h6 class="value">
+              <span *ngIf="item.value > 0; else showDash">{{eval(item.value)}}</span>
+            </h6>
+          </div>
+          <div *ngFor="let item of data.income.accounts.accounts" class="record">
+            <h6 class="title">
+              {{item.name}}
+            </h6>
+            <h6 class="value">
+              <span *ngIf="item.balance < 0; else showDash">{{eval(item.balance)}}</span>
+            </h6>
+            <h6 class="value">
+              <span *ngIf="item.balance > 0; else showDash">{{eval(item.balance)}}</span>
+            </h6>
+          </div>
+          <!-- <div class="divider"></div>
+          <div class="record">
+            <h6 class="title"></h6>
+            <h6 class="value">{{eval(data.income.total)}}</h6>
+          </div>
+          <div class="divider"></div> -->
+          <div class="big-spacer"></div>
+          <h6 class="header">Expenses</h6>
+          <div *ngFor="let item of expenses" class="record">
+            <h6 class="title">
+              {{item.expenses}}
+            </h6>
+            <h6 class="value">
+              <span *ngIf="item.value > 0; else showDash">{{eval(item.value)}}</span>
+            </h6>
+            <h6 class="value">
+              <span *ngIf="item.value < 0; else showDash">{{eval(item.value)}}</span>
+            </h6>
+          </div>
+          <div *ngFor="let item of data.expenses.accounts.accounts" class="record">
+            <h6 class="title">
+              {{item.name}}
+            </h6>
+            <h6 class="value">
+              <span *ngIf="item.balance > 0; else showDash">{{eval(item.balance)}}</span>
+            </h6>
+            <h6 class="value">
+              <span *ngIf="item.balance < 0; else showDash">{{eval(item.balance)}}</span>
+            </h6>
+          </div>
+          <!-- <div class="divider"></div>
+          <div class="record">
+            <h6 class="title"></h6>
+            <h6 class="value">{{eval(data.expenses.total)}}</h6>
+          </div> -->
+          <div class="divider"></div>
+          <div class="record">
+            <h6 class="title header">Net profit (loss)</h6>
+            <h6 class="value">{{eval((data.income.total - data.expenses.total))}}</h6>
+          </div>
+          <div class="divider"></div>
+
+
+
+          <div class="big-spacer"></div>
+          <h6 class="header">Assets</h6>
+          <div *ngFor="let item of assets" class="record">
+            <h6 class="title">
+              {{item.assets}}
+            </h6>
+            <h6 class="value">
+              <span *ngIf="item.value > 0; else showDash">{{eval(item.value)}}</span>
+            </h6>
+            <h6 class="value">
+              <span *ngIf="item.value < 0; else showDash">{{eval(item.value)}}</span>
+            </h6>
+          </div>
+          <div *ngFor="let item of data.assets.accounts.accounts" class="record">
+            <h6 class="title">
+              {{item.name}}
+            </h6>
+            <h6 class="value">
+              <span *ngIf="item.balance > 0; else showDash">{{eval(item.balance)}}</span>
+            </h6>
+            <h6 class="value">
+              <span *ngIf="item.balance < 0; else showDash">{{eval(item.balance)}}</span>
+            </h6>
+          </div>
+          <!-- <div class="divider"></div> -->
+          <!-- <div class="record">
+            <h6 class="title"></h6>
+            <h6 class="value">{{eval(data.assets.total)}}</h6>
+          </div>
+          <div class="divider"></div> -->
+          <div class="big-spacer"></div>
+          <h6 class="header">Liabilities</h6>
+          <div *ngFor="let item of liabilities" class="record">
+            <h6 class="title">
+              {{item.liabilities}}
+            </h6>
+            <h6 class="value">
+              <span *ngIf="item.value < 0; else showDash">{{eval(item.value)}}</span>
+            </h6>
+            <h6 class="value">
+              <span *ngIf="item.value > 0; else showDash">{{eval(item.value)}}</span>
+            </h6>
+          </div>
+          <div *ngFor="let item of data.liabilities.accounts.accounts" class="record">
+            <h6 class="title">
+              {{item.name}}
+            </h6>
+            <h6 class="value">
+              <span *ngIf="item.balance < 0; else showDash">{{eval(item.balance)}}</span>
+            </h6>
+            <h6 class="value">
+              <span *ngIf="item.balance > 0; else showDash">{{eval(item.balance)}}</span>
+            </h6>
+          </div>
+          <!-- <div class="divider"></div> -->
+          <!-- <div class="record">
+            <h6 class="title"></h6>
+            <h6 class="value">{{eval(data.liabilities.total)}}</h6>
+          </div>
+          <div class="divider"></div>
+          <div class="record">
+            <h6 class="title header">Net assets</h6>
+            <h6 class="value">{{eval((data.assets.total - data.liabilities.total))}}</h6>
+          </div>
+          <div class="divider"></div> -->
+          <div class="big-spacer"></div>
+          <h6 class="header">Equity</h6>
+          <div *ngFor="let item of equity" class="record">
+            <h6 class="title">
+              {{item.equity}}
+            </h6>
+            <h6 class="value">
+              <span *ngIf="item.value < 0; else showDash">{{eval(item.value)}}</span>
+            </h6>
+            <h6 class="value">
+              <span *ngIf="item.value > 0; else showDash">{{eval(item.value)}}</span>
+            </h6>
+          </div>
+          <div *ngFor="let item of data.equity.accounts.accounts" class="record">
+            <h6 class="title">
+              {{item.name}}
+            </h6>
+            <h6 class="value">
+              <span *ngIf="item.balance < 0; else showDash">{{eval(item.balance)}}</span>
+            </h6>
+            <h6 class="value">
+              <span *ngIf="item.balance > 0; else showDash">{{eval(item.balance)}}</span>
+            </h6>
+          </div>
+          <div class="divider"></div>
+          <div class="record">
+            <h6 class="title"></h6>
+            <h6 class="value">{{eval(totalDebit)}}</h6>
+            <h6 class="value">{{eval(totalCredit)}}</h6>
+          </div>
+          <div class="divider"></div>
+          <div class="big-spacer"></div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <ng-template #generate>
+      <div class="col-12 report else">
+        <i class="fa fa-book"></i>
+      </div>
+    </ng-template>
+  </div>
+
+</div>
+
+<ng-template #showDash></ng-template>
